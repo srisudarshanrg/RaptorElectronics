@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -13,9 +13,11 @@ var app api.Application
 func main() {
 	// environment variables
 	godotenv.Load(".env")
-	log.Println(os.Getenv("DATABASE_PASSWORD"))
+	dbPassword := os.Getenv("DATABASE_PASSWORD")
 
+	// application setup
 	app.DevelopmentFrontendLink = "http://localhost:3000"
 	app.ProductionFrontendLink = "https://raptorelectronics.sudarshanraptor.world/"
-	app.DatabaseDSN = ""
+	app.DatabaseDSN = fmt.Sprintf("host=postgresql-raptor.alwaysdata.net port=5432 dbname=raptor_electronics username=raptor password=%s", dbPassword)
+	app.Port = 2400
 }

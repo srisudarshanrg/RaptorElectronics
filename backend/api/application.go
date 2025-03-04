@@ -7,4 +7,5 @@ type Application struct {
 	DevelopmentFrontendLink string
 	DatabaseDSN             string
 	Database                *sql.DB
+	Port                    int
 }
