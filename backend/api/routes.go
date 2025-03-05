@@ -11,5 +11,7 @@ func (app *Application) Routes() http.Handler {
 
 	mux.Use(app.enableCORS)
 
+	mux.Get("/home", app.Home)
+
 	return mux
 }
