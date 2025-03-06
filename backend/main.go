@@ -19,7 +19,7 @@ func main() {
 
 	// application setup
 	app.DevelopmentFrontendLink = "http://localhost:3000"
-	app.ProductionFrontendLink = "https://raptorelectronics.sudarshanraptor.world/"
+	app.ProductionFrontendLink = "https://raptorelectronics.sudarshanraptor.world"
 	app.DatabaseDSN = fmt.Sprintf("host=postgresql-raptor.alwaysdata.net port=5432 dbname=raptor_electronics user=raptor password=%s", dbPassword)
 	app.Port = 2400
 
