@@ -6,6 +6,6 @@ type Application struct {
 	ProductionFrontendLink  string
 	DevelopmentFrontendLink string
 	DatabaseDSN             string
-	Database                *sql.DB
+	DB                      *sql.DB
 	Port                    int
 }
