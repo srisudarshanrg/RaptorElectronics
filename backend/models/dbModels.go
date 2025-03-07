@@ -12,3 +12,21 @@ type Laptop struct {
 	CreatedAt interface{} `json:"created_at,omitempty"`
 	UpdatedAt interface{} `json:"updated_at,omitempty"`
 }
+
+type Monitor struct {
+	ID        int         `json:"id"`
+	CreatedAt interface{} `json:"created_at,omitempty"`
+	UpdatedAt interface{} `json:"updated_at,omitempty"`
+}
+
+type Keyboard struct {
+	ID        int         `json:"id"`
+	CreatedAt interface{} `json:"created_at,omitempty"`
+	UpdatedAt interface{} `json:"updated_at,omitempty"`
+}
+
+type Mouse struct {
+	ID        int         `json:"id"`
+	CreatedAt interface{} `json:"created_at,omitempty"`
+	UpdatedAt interface{} `json:"updated_at,omitempty"`
+}

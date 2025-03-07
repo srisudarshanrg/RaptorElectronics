@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
-import { useOutletContext, useSearchParams } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 
 function HomePage() {
-    const developmentBackendLink = "http://localhost:2400/";
-    const productionBackendLink = "https://raptorelectronics-production.up.railway.app/";
-    // const developmentBackendLink = useOutletContext();
-    // const productionBackendLink = useOutletContext();
-    console.log(developmentBackendLink)
+    const { developmentBackendLink } = useOutletContext();
+    const { productionBackendLink } = useOutletContext();
 
     const [laptops, setLaptops] = useState([]);
+    const [monitors, setMonitors] = useState([]);
+    const [keyboards, setKeyboards] = useState([]);
+    const [mouses, setMouses] = useState([]);
 
     useEffect(() => {
-        const headers = new Headers();
-        headers.append("Content-Type", "application/json");
+        const headers = {
+            "Content-Type": "application/json",
+        }
 
         const requestOptions = {
             method: "GET",
@@ -22,9 +23,12 @@ function HomePage() {
         fetch(`${productionBackendLink}`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
-                if (data.laptops && data.laptops !== null) {
-                    setLaptops(data.laptops)
-                }
+                setLaptops(data.laptops);
+                setMonitors(data.monitors);
+                setKeyboards(data.keyboards);
+                setMouses(data.mouses);
+
+                console.log("data fetched");
             })
             .catch((error) => {
                 console.log(error)
