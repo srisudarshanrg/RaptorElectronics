@@ -2,14 +2,17 @@ package api
 
 import "github.com/srisudarshanrg/raptor-electronics/models"
 
-func (app Application) GetAllItems() ([]models.Laptop, error) {
+func (app Application) GetAllItems() ([]models.Laptop, []models.Monitor, []models.Keyboard, []models.Mouse, error) {
 	queryLaptops := `select * from laptops`
 	rows, err := app.DB.Query(queryLaptops)
 	if err != nil {
-		return nil, err
+		return nil, nil, nil, nil, err
 	}
 
 	var laptops []models.Laptop
+	var monitors []models.Monitor
+	var keyboards []models.Keyboard
+	var mouses []models.Mouse
 
 	for rows.Next() {
 		var laptop models.Laptop
@@ -26,10 +29,10 @@ func (app Application) GetAllItems() ([]models.Laptop, error) {
 			&laptop.UpdatedAt,
 		)
 		if err != nil {
-			return nil, err
+			return nil, nil, nil, nil, err
 		}
 		laptops = append(laptops, laptop)
 	}
 
-	return laptops, nil
+	return laptops, monitors, keyboards, mouses, nil
 }
