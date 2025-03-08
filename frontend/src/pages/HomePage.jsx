@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 
 function HomePage() {
-    const { developmentBackendLink } = useOutletContext();
-    const { productionBackendLink } = useOutletContext();
+    const { developmentBackendLink, productionBackendLink } = useOutletContext();
 
     const [laptops, setLaptops] = useState([]);
     const [monitors, setMonitors] = useState([]);
@@ -20,7 +19,7 @@ function HomePage() {
             headers: headers,
         }
 
-        fetch(`${productionBackendLink}`, requestOptions)
+        fetch(`${developmentBackendLink}`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 setLaptops(data.laptops);

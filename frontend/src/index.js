@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import './static/styles/index.css';
 import App from './App';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from './pages/HomePage';
@@ -13,6 +13,7 @@ import Cart from './pages/Cart';
 import SearchPage from './pages/SearchPage';
 import LoginPage from './pages/LoginPage';
 import ProfilePage from './pages/ProfilePage';
+import SignupPage from './pages/SignupPage';
 
 const router = createBrowserRouter([
   {
@@ -28,7 +29,8 @@ const router = createBrowserRouter([
       {path: "/cart", element: <Cart />},
       {path: "/search", element: <SearchPage />},
       {path: "/profile", element: <ProfilePage />},
-      {path: "/login", element: <LoginPage />}
+      {path: "/login", element: <LoginPage />},
+      {path: "/sign-up", element: <SignupPage />},
     ]
   }
 ]);
