@@ -1,8 +1,9 @@
 import { Link, useOutletContext } from "react-router-dom"
 import "../static/styles/LoginPage_SignupPage.css"
+import { useEffect } from "react";
 
 function SignupPage() {
-    const { errorAlert, setErrorAlert  } = useOutletContext();
+    const { errorAlert, setErrorAlert, productionBackendLink, developmentBackendLink, user, setUser  } = useOutletContext();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -16,22 +17,39 @@ function SignupPage() {
 
         var errors = []
 
-        if (password !== repeat_password) {
-            errors.push("Password has to be equal to repeated password.")
+        let payload = {
+            username: username,
+            email: email,
+            password: password,
+            repeat_password: repeat_password,
         }
-        if (username.length === 0) {
-            errors.push("Username field is required")
+        const headers = {
+            "Content-Type": "application/json",
         }
-        if (email.length === 0) {
-            errors.push("Email field is required")
+        const requestOptions = {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify(payload),
         }
-        
-        if (errors.length > 0) {
-            setErrorAlert(errors);
-            console.log(errors)
-        } else {
 
-        }
+        fetch(`${developmentBackendLink}sign-up`, requestOptions)
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.error !== null) {
+                    data.error.forEach((e) => {
+                        errors.push(e)
+                    })
+                    setErrorAlert(errors);
+                    console.log(data.error);
+                    console.log(errorAlert)
+                } else {
+                    console.log("signed up and logged in");
+                    setUser(data.user);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }
     
     return (

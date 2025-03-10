@@ -11,6 +11,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [errorAlert, setErrorAlert] = useState([]);
+  const [user, setUser] = useState({});
 
   const logout = () => {
     setLoggedIn(false);
@@ -21,7 +22,7 @@ function App() {
 
     console.log(searchQuery);
 
-    const payload = {
+    let payload = {
       search_query: searchQuery,
     }
     const headers = {
@@ -121,6 +122,8 @@ function App() {
           setNumberCart,
           errorAlert,
           setErrorAlert,
+          user,
+          setUser,
         }}
       />
     </div>

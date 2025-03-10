@@ -19,7 +19,7 @@ function HomePage() {
             headers: headers,
         }
 
-        fetch(`${productionBackendLink}`, requestOptions)
+        fetch(`${developmentBackendLink}`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 setLaptops(data.laptops);
