@@ -4,9 +4,9 @@ import (
 	"net/http"
 )
 
-func (app *Application) enableCORS(handler http.Handler) http.Handler {
+func (app Application) enableCORS(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", app.ProductionFrontendLink)
+		w.Header().Set("Access-Control-Allow-Origin", app.DevelopmentFrontendLink)
 
 		if r.Method == "OPTIONS" {
 			w.Header().Set("Access-Control-Allow-Credentials", "true")

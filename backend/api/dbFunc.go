@@ -69,20 +69,27 @@ func (app Application) CreateUser(username, email, password string) (models.User
 	return user, nil
 }
 
-func (app Application) UserLogin(credential, password string) (models.User, error) {
-	queryGetUser := `select password from users where username=$1 or email=$1`
-	row, err := app.DB.Query(queryGetUser, credential)
+func (app Application) UserLogin(credential, password string) (models.User, bool, error) {
+	queryCheckUser := `select * from users where username=$1 or email=$1`
+	results, _ := app.DB.Exec(queryCheckUser, credential)
+	number, _ := results.RowsAffected()
+	if number == 0 {
+		return models.User{}, false, errors.New("Either credentials or password is incorrect")
+	}
+
+	queryGetUser := `select * from users where username=$1 or email=$1`
+	row := app.DB.QueryRow(queryGetUser, credential)
 
 	var user models.User
 
-	err = row.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.JoinDate, &user.CreatedAt, &user.UpdatedAt)
+	err := row.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.JoinDate, &user.CreatedAt, &user.UpdatedAt)
 	if err != nil {
-		return models.User{}, err
+		return models.User{}, false, err
 	}
 
 	check := app.CompareHash(password, user.Password)
 	if !check {
-		return models.User{}, errors.New("Either credentials or password is incorrect")
+		return models.User{}, false, errors.New("Either credentials or password is incorrect")
 	}
-	return user, nil
+	return user, true, nil
 }

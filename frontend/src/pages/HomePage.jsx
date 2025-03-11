@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 
 function HomePage() {
-    const { developmentBackendLink, productionBackendLink } = useOutletContext();
+    const { developmentBackendLink, productionBackendLink, user, setUser, loggedIn, setLoggedIn } = useOutletContext();
 
     const [laptops, setLaptops] = useState([]);
     const [monitors, setMonitors] = useState([]);
@@ -19,9 +19,17 @@ function HomePage() {
             headers: headers,
         }
 
-        fetch(`${productionBackendLink}`, requestOptions)
+        fetch(`${developmentBackendLink}`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
+                if (data.user !== null) {
+                    setUser(data.user);
+                    setLoggedIn(true);
+                } else {
+                    setUser({});
+                    setLoggedIn(false);
+                }
+
                 setLaptops(data.laptops);
                 setMonitors(data.monitors);
                 setKeyboards(data.keyboards);

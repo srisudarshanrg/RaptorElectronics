@@ -3,7 +3,7 @@ import "../static/styles/LoginPage_SignupPage.css"
 import { useEffect } from "react";
 
 function SignupPage() {
-    const { errorAlert, setErrorAlert, productionBackendLink, developmentBackendLink, user, setUser  } = useOutletContext();
+    const { errorAlert, setErrorAlert, productionBackendLink, developmentBackendLink, user, setUser, navigate  } = useOutletContext();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -32,7 +32,7 @@ function SignupPage() {
             body: JSON.stringify(payload),
         }
 
-        fetch(`${productionBackendLink}sign-up`, requestOptions)
+        fetch(`${developmentBackendLink}sign-up`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 if (data.error !== null) {
@@ -45,6 +45,7 @@ function SignupPage() {
                 } else {
                     console.log("signed up and logged in");
                     setUser(data.user);
+                    navigate("/login");
                 }
             })
             .catch((error) => {

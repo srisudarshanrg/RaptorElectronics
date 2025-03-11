@@ -7,8 +7,20 @@ import (
 	"github.com/srisudarshanrg/raptor-electronics/models"
 )
 
+var loggedIn = false
+
 // Home is the handler for the home responses and requests
 func (app Application) Home(w http.ResponseWriter, r *http.Request) {
+	var userOutput interface{}
+
+	if loggedIn {
+		userInterface := app.Session.Get(r.Context(), "user")
+		user := userInterface.(models.User)
+		userOutput = user
+	} else {
+		userOutput = nil
+	}
+
 	laptops, monitors, keyboards, mouses, err := app.GetAllItems()
 	if err != nil {
 		log.Println(err)
@@ -19,11 +31,13 @@ func (app Application) Home(w http.ResponseWriter, r *http.Request) {
 		Monitors  []models.Monitor  `json:"monitors"`
 		Keyboards []models.Keyboard `json:"keyboards"`
 		Mouses    []models.Mouse    `json:"mouses"`
+		User      interface{}       `json:"user"`
 	}{
 		Laptops:   laptops,
 		Monitors:  monitors,
 		Keyboards: keyboards,
 		Mouses:    mouses,
+		User:      userOutput,
 	}
 
 	err = app.writeJSON(w, http.StatusOK, payload)
@@ -113,6 +127,7 @@ func (app Application) SignUp(w http.ResponseWriter, r *http.Request) {
 	}
 
 	app.Session.Put(r.Context(), "user", user)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func (app Application) Login(w http.ResponseWriter, r *http.Request) {
@@ -129,19 +144,33 @@ func (app Application) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := app.UserLogin(userInput.Credentials, userInput.Password)
-	if err != nil && err.Error() != "Either credentials or password is incorrect" {
-		log.Println(err)
-		return
+	var userOutput interface{}
+
+	user, check, err := app.UserLogin(userInput.Credentials, userInput.Password)
+	if err != nil {
+		if err.Error() == "Either credentials or password is incorrect" {
+			app.errorJSON(w, err, http.StatusUnauthorized)
+			return
+		} else {
+			log.Println(err)
+			app.errorJSON(w, err, http.StatusBadRequest)
+			return
+		}
+	}
+
+	if check {
+		userOutput = user
+	} else {
+		userOutput = nil
 	}
 
 	var payload = struct {
-		User  models.User `json:"user"`
-		Error error       `json:"error"`
+		User interface{} `json:"user"`
 	}{
-		User:  user,
-		Error: err,
+		User: userOutput,
 	}
+
+	app.Session.Put(r.Context(), "user", user)
 
 	err = app.writeJSON(w, http.StatusOK, payload)
 	if err != nil {
@@ -150,7 +179,9 @@ func (app Application) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.Session.Put(r.Context(), "user", user)
+	loggedIn = true
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func (app Application) Logout(w http.ResponseWriter, r *http.Request) {

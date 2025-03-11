@@ -1,8 +1,18 @@
+import { useEffect } from "react";
 import "../static/styles/LoginPage_SignupPage.css"
 import { Link, useOutletContext } from "react-router-dom"
 
 function LoginPage() {
-    const { errorAlert, setErrorAlert, user, setUser, developmentBackendLink, productionBackendLink } = useOutletContext();
+    const { errorAlert, setErrorAlert, user, setUser, developmentBackendLink, productionBackendLink,
+        loggedIn, setLoggedIn, navigate,
+    } = useOutletContext();
+
+    useEffect(() => {
+        if (loggedIn) {
+            setUser({});
+            setLoggedIn(false);
+        }
+    }, [user, loggedIn])
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -27,19 +37,19 @@ function LoginPage() {
 
         fetch(`${developmentBackendLink}login`, requestOptions)
             .then((response) => {
-                console.log(response)
-                response.json()
+                if (response.status === 401) {
+                    errors.push("Either credentials or password is incorrect");
+                    setErrorAlert(errors);
+                    return null // null prevents further processing
+                }
+                return response.json()
             })
             .then((data) => {
-                if (data.error !== null) {
-                    data.error.forEach((e) => {
-                        errors.push(e);
-                    })
-                    setErrorAlert(errors);
-                } else {
-                    console.log("logged in");
+                if (data.user !== null) {
                     console.log(data.user);
                     setUser(data.user);
+                    setLoggedIn(true);
+                    navigate("/")
                 }
             })
             .catch((error) => {

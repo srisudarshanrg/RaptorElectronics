@@ -1,6 +1,6 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import './static/styles/App.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Alert from './components/Alert';
 
 function App() {
@@ -12,9 +12,11 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [errorAlert, setErrorAlert] = useState([]);
   const [user, setUser] = useState({});
+  const navigate = useNavigate();
 
   const logout = () => {
     setLoggedIn(false);
+    navigate("/login");
   }
 
   const handleSearchSubmit = (event) => {
@@ -109,8 +111,6 @@ function App() {
               <Alert key={index} color="danger" message={error} />
             )
           )}
-          {setTimeout(() => {setErrorAlert([])}, 10000)}
-          {console.log(errorAlert)}
         </>
       }
 
@@ -124,6 +124,9 @@ function App() {
           setErrorAlert,
           user,
           setUser,
+          navigate,
+          loggedIn,
+          setLoggedIn,
         }}
       />
     </div>
