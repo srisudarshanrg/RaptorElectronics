@@ -3,16 +3,9 @@ import "../static/styles/LoginPage_SignupPage.css"
 import { Link, useOutletContext } from "react-router-dom"
 
 function LoginPage() {
-    const { errorAlert, setErrorAlert, user, setUser, developmentBackendLink, productionBackendLink,
-        loggedIn, setLoggedIn, navigate,
+    const { errorAlert, setErrorAlert, user, developmentBackendLink, productionBackendLink,
+        navigate, loggedIn, setLoggedIn,
     } = useOutletContext();
-
-    useEffect(() => {
-        if (loggedIn) {
-            setUser({});
-            setLoggedIn(false);
-        }
-    }, [user, loggedIn])
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -47,9 +40,9 @@ function LoginPage() {
             .then((data) => {
                 if (data.user !== null) {
                     console.log(data.user);
-                    setUser(data.user);
-                    setLoggedIn(true);
-                    navigate("/")
+                    var userStringified  = JSON.stringify(data.user);
+                    sessionStorage.setItem("user", userStringified);
+                    navigate("/");
                 }
             })
             .catch((error) => {
@@ -69,7 +62,7 @@ function LoginPage() {
                 <br />
 
                 <label htmlFor="password" className="form-label">Password</label>
-                <input type="text" className="form-control" name="password" id="password" placeholder="Enter password" />
+                <input type="password" className="form-control" name="password" id="password" placeholder="Enter password" />
 
                 <hr />
 

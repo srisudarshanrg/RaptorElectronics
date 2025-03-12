@@ -3,7 +3,7 @@ import "../static/styles/LoginPage_SignupPage.css"
 import { useEffect } from "react";
 
 function SignupPage() {
-    const { errorAlert, setErrorAlert, productionBackendLink, developmentBackendLink, user, setUser, navigate  } = useOutletContext();
+    const { errorAlert, setErrorAlert, productionBackendLink, developmentBackendLink, user, navigate  } = useOutletContext();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -43,8 +43,7 @@ function SignupPage() {
                     console.log(data.error);
                     console.log(errorAlert)
                 } else {
-                    console.log("signed up and logged in");
-                    setUser(data.user);
+                    console.log("signed up");
                     navigate("/login");
                 }
             })
@@ -70,12 +69,12 @@ function SignupPage() {
                 <br />
 
                 <label htmlFor="password" className="form-label">Password</label>
-                <input type="text" className="form-control" name="password" id="password" placeholder="Enter password" />
+                <input type="password" className="form-control" name="password" id="password" placeholder="Enter password" />
 
                 <br />
 
                 <label htmlFor="repeat_password" className="form-label">Repeat Password</label>
-                <input type="text" className="form-control" name="repeat_password" id="repeat_password" placeholder="Repeat password" />
+                <input type="password" className="form-control" name="repeat_password" id="repeat_password" placeholder="Repeat password" />
 
                 <hr />
 

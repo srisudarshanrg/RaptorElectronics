@@ -5,6 +5,7 @@ create_table("laptops") {
     t.Column("ram", "integer")
     t.Column("storage", "integer")
     t.Column("display", "string")
+    t.Column("price", "integer")
     t.Column("company", "string")
     t.Column("image_link", "string")
 }

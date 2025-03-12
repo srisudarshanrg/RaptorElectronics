@@ -13,4 +13,5 @@ type Application struct {
 	DB                      *sql.DB
 	Session                 *scs.SessionManager
 	Port                    int
+	InProduction            bool
 }

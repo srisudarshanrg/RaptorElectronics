@@ -29,6 +29,7 @@ func (app Application) GetAllItems() ([]models.Laptop, []models.Monitor, []model
 			&laptop.RAM,
 			&laptop.Storage,
 			&laptop.Display,
+			&laptop.Price,
 			&laptop.Company,
 			&laptop.ImageLink,
 			&laptop.CreatedAt,
@@ -50,8 +51,8 @@ func (app Application) CreateUser(username, email, password string) (models.User
 	if err != nil {
 		return models.User{}, err
 	}
-	queryInsertUser := `insert into users(username, email, password, join_date) values($1, $2, $3, $4)`
-	_, err = app.DB.Exec(queryInsertUser, username, email, hashPassword, dateString)
+	queryInsertUser := `insert into users(username, email, password, amount, join_date) values($1, $2, $3, $4, $5)`
+	_, err = app.DB.Exec(queryInsertUser, username, email, hashPassword, 999999999, dateString)
 	if err != nil {
 		return models.User{}, err
 	}
@@ -61,7 +62,7 @@ func (app Application) CreateUser(username, email, password string) (models.User
 
 	var user models.User
 
-	err = row.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.JoinDate, &user.CreatedAt, &user.UpdatedAt)
+	err = row.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.Amount, &user.JoinDate, &user.CreatedAt, &user.UpdatedAt)
 	if err != nil {
 		return models.User{}, err
 	}
@@ -82,7 +83,7 @@ func (app Application) UserLogin(credential, password string) (models.User, bool
 
 	var user models.User
 
-	err := row.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.JoinDate, &user.CreatedAt, &user.UpdatedAt)
+	err := row.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.Amount, &user.JoinDate, &user.CreatedAt, &user.UpdatedAt)
 	if err != nil {
 		return models.User{}, false, err
 	}
@@ -92,4 +93,16 @@ func (app Application) UserLogin(credential, password string) (models.User, bool
 		return models.User{}, false, errors.New("Either credentials or password is incorrect")
 	}
 	return user, true, nil
+}
+
+func (app Application) GetUserByID(id int) (models.User, error) {
+	query := `select * from users where id=$1`
+	row := app.DB.QueryRow(query, id)
+
+	var user models.User
+	err := row.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.JoinDate, &user.CreatedAt, &user.UpdatedAt)
+	if err != nil {
+		return models.User{}, err
+	}
+	return user, nil
 }

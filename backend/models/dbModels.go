@@ -7,6 +7,7 @@ type Laptop struct {
 	RAM       int         `json:"ram"`
 	Storage   int         `json:"storage"`
 	Display   string      `json:"display"`
+	Price     int         `json:"price"`
 	Company   string      `json:"company"`
 	ImageLink string      `json:"image_link"`
 	CreatedAt interface{} `json:"created_at,omitempty"`

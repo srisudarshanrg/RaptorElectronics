@@ -1,45 +1,23 @@
-model_name,processor,ram,storage,display,company,image_link
-ZenBook Pro 15,Intel Core i7-12700H,16,512,15.6" OLED,ASUS,https://example.com/zenbook-pro-15.jpg
-ROG Strix G16,Intel Core i9-13980HX,32,1000,16" 240Hz,ASUS,https://example.com/rog-strix-g16.jpg
-ZenBook 14 OLED,AMD Ryzen 7 7730U,16,1000,14" OLED,ASUS,https://example.com/zenbook-14-oled.jpg
-ROG Flow X13,AMD Ryzen 9 7940HS,32,1000,13.4" 165Hz,ASUS,https://example.com/rog-flow-x13.jpg
-VivoBook 15,Intel Core i5-1235U,8,512,15.6" IPS,ASUS,https://example.com/vivobook-15.jpg
-Zephyrus G14,AMD Ryzen 9 7940HS,32,1000,14" 165Hz,ASUS,https://example.com/zephyrus-g14.jpg
-MacBook Air M2,Apple M2,8,256,13.6" Retina,Apple,https://example.com/macbook-air-m2.jpg
-MacBook Pro 16,Apple M3 Pro,16,1000,16.2" Liquid Retina,Apple,https://example.com/macbook-pro-16.jpg
-MacBook Pro 14,Apple M3 Max,32,2000,14.2" Liquid Retina,Apple,https://example.com/macbook-pro-14.jpg
-XPS 13 Plus,Intel Core i7-1360P,16,512,13.4" OLED,Dell,https://example.com/xps-13-plus.jpg
-Alienware x16,Intel Core i9-13980HX,32,2000,16" 240Hz,Dell,https://example.com/alienware-x16.jpg
-Latitude 7430,Intel Core i7-1265U,16,512,14" IPS,Dell,https://example.com/latitude-7430.jpg
-Inspiron 15,Intel Core i5-13400H,16,512,15.6" FHD,Dell,https://example.com/inspiron-15.jpg
-Alienware m15 R7,AMD Ryzen 9 6900HX,32,1000,15.6" 240Hz,Dell,https://example.com/alienware-m15-r7.jpg
-ThinkPad X1 Carbon,Intel Core i7-1260P,16,1000,14" IPS,Lenovo,https://example.com/thinkpad-x1-carbon.jpg
-Legion 5 Pro,AMD Ryzen 7 6800H,16,512,16" 165Hz,Lenovo,https://example.com/legion-5-pro.jpg
-IdeaPad 5 Pro,AMD Ryzen 7 7730U,16,512,14" IPS,Lenovo,https://example.com/ideapad-5-pro.jpg
-ThinkBook 16p,AMD Ryzen 7 7840HS,16,1000,16" IPS,Lenovo,https://example.com/thinkbook-16p.jpg
-Yoga 9i,Intel Core i7-1370P,16,1000,14" OLED,Lenovo,https://example.com/yoga-9i.jp
-Pavilion Plus 14,Intel Core i5-13500H,16,512,14" OLED,HP,https://example.com/pavilion-plus-14.jpg
-Omen 17,Intel Core i9-13980HX,32,2000,17.3" 240Hz,HP,https://example.com/omen-17.jpg
-Pavilion Gaming 15,AMD Ryzen 5 6600H,16,512,15.6" 144Hz,HP,https://example.com/pavilion-gaming-15.jpg
-Envy 16,Intel Core i7-13700H,32,1000,16" OLED,HP,https://example.com/envy-16.jpg
-Gram 17,Intel Core i7-1260P,16,1000,17" WQXGA,LG,https://example.com/lg-gram-17.jpg
-Gram Style 16,Intel Core i7-1360P,16,1000,16" OLED,LG,https://example.com/lg-gram-style-16.jpg
-Ultra PC 14,AMD Ryzen 7 7735U,16,512,14" IPS,LG,https://example.com/lg-ultra-pc-14.jpg
-Aspire 7,AMD Ryzen 5 7535HS,16,512,15.6" IPS,Acer,https://example.com/aspire-7.jpg
-Predator Helios 300,Intel Core i7-13700H,16,1000,15.6" 165Hz,Acer,https://example.com/predator-helios-300.jpg
-Swift X 14,AMD Ryzen 7 7840HS,16,1000,14" IPS,Acer,https://example.com/swift-x-14.jpg
-Aspire Vero 15,Intel Core i7-1360P,16,1000,15.6" IPS,Acer,https://example.com/aspire-vero-15.jpg
-Nitro 5,Intel Core i5-13500H,16,512,15.6" 144Hz,Acer,https://example.com/nitro-5.jpg
-Stealth 14 Studio,Intel Core i9-13900H,32,1000,14" 165Hz,MSI,https://example.com/stealth-14-studio.jpg
-GE76 Raider,Intel Core i9-13980HX,32,2000,17.3" 240Hz,MSI,https://example.com/ge76-raider.jpg
-Cyborg 15,Intel Core i7-12650H,16,512,15.6" 144Hz,MSI,https://example.com/cyborg-15.jpg
-Galaxy Book3 Pro,Intel Core i7-1360P,16,1000,16" AMOLED,Samsung,https://example.com/galaxy-book3-pro.jpg
-Galaxy Book Odyssey,Intel Core i7-12700H,16,512,15.6" IPS,Samsung,https://example.com/galaxy-book-odyssey.jpg
-Galaxy Book2 360,Intel Core i5-1235U,8,256,13.3" AMOLED,Samsung,https://example.com/galaxy-book2-360.jpg
-Surface Laptop 5,Intel Core i7-1265U,16,512,13.5" PixelSense,Microsoft,https://example.com/surface-laptop-5.jpg
-Surface Book 3,Intel Core i7-1065G7,16,1000,15" PixelSense,Microsoft,https://example.com/surface-book-3.jpg
-Surface Pro 9,Intel Core i5-1235U,8,256,13" PixelSense,Microsoft,https://example.com/surface-pro-9.jpg
-Surface Studio Laptop,Intel Core i7-13700H,32,1000,14.4" PixelSense,Microsoft,https://example.com/surface-studio-laptop.jpg
-Blade 15 Advanced,Intel Core i7-12800H,32,1000,15.6" 240Hz,Razer,https://example.com/blade-15-advanced.jpg
-Blade 16,Intel Core i9-13980HX,32,2000,16" Mini-LED,Razer,https://example.com/blade-16.jpg
-Blade Stealth 13,Intel Core i7-1165G7,16,512,13.3" OLED,Razer,https://example.com/blade-stealth-13.jpg
+model_name,processor,ram,storage,display,price,company,image_link
+ZenBook Pro 15,Intel Core i7-12700H,16,512,15.6"OLED,125000,ASUS,https://example.com/zenbook-pro-15.jpg
+ROG Strix G16,Intel Core i9-13980HX,32,1000,16"240Hz,210000,ASUS,https://example.com/rog-strix-g16.jpg
+ZenBook 14 OLED,AMD Ryzen 7 7730U,16,1000,14"OLED,95000,ASUS,https://example.com/zenbook-14-oled.jpg
+ROG Flow X13,AMD Ryzen 9 7940HS,32,1000,13.4"165Hz,185000,ASUS,https://example.com/rog-flow-x13.jpg
+VivoBook 15,Intel Core i5-1235U,8,512,15.6"IPS,55000,ASUS,https://example.com/vivobook-15.jpg
+Zephyrus G14,AMD Ryzen 9 7940HS,32,1000,14"165Hz,195000,ASUS,https://example.com/zephyrus-g14.jpg
+MacBook Air M2,Apple M2,8,256,13.6"Retina,110000,Apple,https://example.com/macbook-air-m2.jpg
+MacBook Pro 16,Apple M3 Pro,16,1000,16.2"Liquid Retina,280000,Apple,https://example.com/macbook-pro-16.jpg
+MacBook Pro 14,Apple M3 Max,32,2000,14.2"Liquid Retina,340000,Apple,https://example.com/macbook-pro-14.jpg
+XPS 13 Plus,Intel Core i7-1360P,16,512,13.4"OLED,150000,Dell,https://example.com/xps-13-plus.jpg
+Alienware x16,Intel Core i9-13980HX,32,2000,16"240Hz,310000,Dell,https://example.com/alienware-x16.jpg
+Latitude 7430,Intel Core i7-1265U,16,512,14"IPS,140000,Dell,https://example.com/latitude-7430.jpg
+Inspiron 15,Intel Core i5-13400H,16,512,15.6"FHD,80000,Dell,https://example.com/inspiron-15.jpg
+Alienware m15 R7,AMD Ryzen 9 6900HX,32,1000,15.6"240Hz,240000,Dell,https://example.com/alienware-m15-r7.jpg
+ThinkPad X1 Carbon,Intel Core i7-1260P,16,1000,14"IPS,190000,Lenovo,https://example.com/thinkpad-x1-carbon.jpg
+Legion 5 Pro,AMD Ryzen 7 6800H,16,512,16"165Hz,130000,Lenovo,https://example.com/legion-5-pro.jpg
+IdeaPad 5 Pro,AMD Ryzen 7 7730U,16,512,14"IPS,85000,Lenovo,https://example.com/ideapad-5-pro.jpg
+ThinkBook 16p,AMD Ryzen 7 7840HS,16,1000,16"IPS,150000,Lenovo,https://example.com/thinkbook-16p.jpg
+Yoga 9i,Intel Core i7-1370P,16,1000,14"OLED,175000,Lenovo,https://example.com/yoga-9i.jpg
+Pavilion Plus 14,Intel Core i5-13500H,16,512,14"OLED,90000,HP,https://example.com/pavilion-plus-14.jpg
+Omen 17,Intel Core i9-13980HX,32,2000,17.3"240Hz,320000,HP,https://example.com/omen-17.jpg
+Pavilion Gaming 15,AMD Ryzen 5 6600H,16,512,15.6"144Hz,95000,HP,https://example.com/pavilion-gaming-15.jpg

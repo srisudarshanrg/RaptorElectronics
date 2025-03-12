@@ -5,6 +5,7 @@ type User struct {
 	Username  string      `json:"username"`
 	Email     string      `json:"email"`
 	Password  string      `json:"password"`
+	Amount    int         `json:"amount"`
 	JoinDate  string      `json:"join_date"`
 	CreatedAt interface{} `json:"created_at,omitempty"`
 	UpdatedAt interface{} `json:"updated_at,omitempty"`

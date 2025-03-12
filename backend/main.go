@@ -24,8 +24,13 @@ func main() {
 	godotenv.Load(".env")
 	dbPassword := os.Getenv("DATABASE_PASSWORD")
 
+	app.InProduction = false
+
 	session = scs.New()
 	session.Lifetime = 1 * time.Hour
+	session.Cookie.Persist = true
+	session.Cookie.SameSite = http.SameSiteLaxMode
+	session.Cookie.Secure = app.InProduction
 
 	// application setup
 	app.DevelopmentFrontendLink = "http://localhost:3000"

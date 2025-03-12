@@ -8,16 +8,27 @@ function App() {
   const productionBackendLink = "https://raptorelectronics-production.up.railway.app/";
 
   const [numberCart, setNumberCart] = useState(0);
-  const [loggedIn, setLoggedIn] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [errorAlert, setErrorAlert] = useState([]);
-  const [user, setUser] = useState({});
+  const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
 
+  var user
+  user = sessionStorage.getItem("user")
+
   const logout = () => {
+    sessionStorage.removeItem("user");
+    user = null;
     setLoggedIn(false);
-    navigate("/login");
   }
+
+  useEffect(() => {
+    if (user !== null) {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+    }
+  }, [user])
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
@@ -122,9 +133,8 @@ function App() {
           setNumberCart,
           errorAlert,
           setErrorAlert,
-          user,
-          setUser,
           navigate,
+          user,
           loggedIn,
           setLoggedIn,
         }}

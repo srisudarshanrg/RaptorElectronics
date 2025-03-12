@@ -7,20 +7,8 @@ import (
 	"github.com/srisudarshanrg/raptor-electronics/models"
 )
 
-var loggedIn = false
-
 // Home is the handler for the home responses and requests
 func (app Application) Home(w http.ResponseWriter, r *http.Request) {
-	var userOutput interface{}
-
-	if loggedIn {
-		userInterface := app.Session.Get(r.Context(), "user")
-		user := userInterface.(models.User)
-		userOutput = user
-	} else {
-		userOutput = nil
-	}
-
 	laptops, monitors, keyboards, mouses, err := app.GetAllItems()
 	if err != nil {
 		log.Println(err)
@@ -31,19 +19,47 @@ func (app Application) Home(w http.ResponseWriter, r *http.Request) {
 		Monitors  []models.Monitor  `json:"monitors"`
 		Keyboards []models.Keyboard `json:"keyboards"`
 		Mouses    []models.Mouse    `json:"mouses"`
-		User      interface{}       `json:"user"`
 	}{
 		Laptops:   laptops,
 		Monitors:  monitors,
 		Keyboards: keyboards,
 		Mouses:    mouses,
-		User:      userOutput,
 	}
 
 	err = app.writeJSON(w, http.StatusOK, payload)
 	if err != nil {
 		log.Println(err)
 	}
+}
+
+func (app Application) Profile(w http.ResponseWriter, r *http.Request) {
+	type InputPayload struct {
+		ID int `json:"id"`
+	}
+
+	var inputPayload InputPayload
+
+	err := app.readJSON(r, &inputPayload)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
+	}
+
+	user, err := app.GetUserByID(inputPayload.ID)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
+	}
+
+	var payload = struct {
+		User models.User `json:"user"`
+	}{
+		User: user,
+	}
+
+	app.writeJSON(w, http.StatusOK, payload)
 }
 
 func (app Application) SignUp(w http.ResponseWriter, r *http.Request) {
@@ -98,12 +114,15 @@ func (app Application) SignUp(w http.ResponseWriter, r *http.Request) {
 
 	var errorStatus interface{}
 	var user interface{}
+	var success bool
 
 	if len(errors) > 0 {
 		errorStatus = errors
 		user = nil
+		success = false
 	} else {
 		errorStatus = nil
+		success = true
 		user, err = app.CreateUser(userInput.Username, userInput.Email, userInput.Password)
 		if err != nil {
 			log.Println(err)
@@ -112,11 +131,13 @@ func (app Application) SignUp(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var payload = struct {
-		Error interface{} `json:"error"`
-		User  interface{} `json:"user"`
+		Error   interface{} `json:"error"`
+		User    interface{} `json:"user"`
+		Success bool        `json:"success"`
 	}{
-		Error: errorStatus,
-		User:  user,
+		Error:   errorStatus,
+		User:    user,
+		Success: success,
 	}
 
 	err = app.writeJSON(w, http.StatusOK, payload)
@@ -125,9 +146,6 @@ func (app Application) SignUp(w http.ResponseWriter, r *http.Request) {
 		app.errorJSON(w, err, http.StatusBadRequest)
 		return
 	}
-
-	app.Session.Put(r.Context(), "user", user)
-	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func (app Application) Login(w http.ResponseWriter, r *http.Request) {
@@ -170,8 +188,6 @@ func (app Application) Login(w http.ResponseWriter, r *http.Request) {
 		User: userOutput,
 	}
 
-	app.Session.Put(r.Context(), "user", user)
-
 	err = app.writeJSON(w, http.StatusOK, payload)
 	if err != nil {
 		log.Println(err)
@@ -179,11 +195,4 @@ func (app Application) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	loggedIn = true
-
-	http.Redirect(w, r, "/", http.StatusSeeOther)
-}
-
-func (app Application) Logout(w http.ResponseWriter, r *http.Request) {
-	app.Session.Remove(r.Context(), "user")
 }
