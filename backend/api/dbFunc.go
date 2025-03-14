@@ -51,7 +51,7 @@ func (app Application) CreateUser(username, email, password string) (models.User
 	if err != nil {
 		return models.User{}, err
 	}
-	queryInsertUser := `insert into users(username, email, password, amount, join_date, created_at, updated_at) values($1, $2, $3, $4, $5)`
+	queryInsertUser := `insert into users(username, email, password, amount, join_date, created_at, updated_at) values($1, $2, $3, $4, $5, $6, $7)`
 	_, err = app.DB.Exec(queryInsertUser, username, email, hashPassword, 999999999, dateString, time.Now(), time.Now())
 	if err != nil {
 		return models.User{}, err
