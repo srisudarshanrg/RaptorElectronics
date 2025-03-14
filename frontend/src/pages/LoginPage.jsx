@@ -28,7 +28,7 @@ function LoginPage() {
 
         var errors = []
 
-        fetch(`${developmentBackendLink}login`, requestOptions)
+        fetch(`${productionBackendLink}login`, requestOptions)
             .then((response) => {
                 if (response.status === 401) {
                     errors.push("Either credentials or password is incorrect");
@@ -43,6 +43,7 @@ function LoginPage() {
                     var userStringified  = JSON.stringify(data.user);
                     sessionStorage.setItem("user", userStringified);
                     navigate("/");
+                    setErrorAlert([]);
                 }
             })
             .catch((error) => {

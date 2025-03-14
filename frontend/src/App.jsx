@@ -22,6 +22,10 @@ function App() {
     setLoggedIn(false);
   }
 
+  if (user !== null) {
+    user = JSON.parse(user)
+  }
+
   useEffect(() => {
     if (user !== null) {
       setLoggedIn(true);
@@ -47,7 +51,7 @@ function App() {
       body: JSON.stringify(payload),
     }
 
-    fetch(`${developmentBackendLink}`)
+    fetch(`${productionBackendLink}`)
   }
 
   return (
@@ -106,6 +110,7 @@ function App() {
                   </>
                 ) : (
                   <>
+                    <Link className="nav-margin" style={{textDecoration: "none", color: "#fff"}}>${user.amount}</Link>
                     <Link to="/profile" className="nav-margin profile-link"><i className="fa-regular fa-user"></i></Link>
                     <button className="btn btn-danger nav-margin" onClick={logout}>Logout</button>
                   </>

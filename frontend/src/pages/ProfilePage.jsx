@@ -3,37 +3,20 @@ import { useOutletContext } from "react-router-dom"
 import "../static/styles/ProfilePage.css"
 
 function ProfilePage() {
-    const { developmentBackendLink, productionBackendLink, navigate, loggedIn } = useOutletContext();
+    const { developmentBackendLink, productionBackendLink, navigate, loggedIn, errorAlert, setErrorAlert } = useOutletContext();
 
     const [userProfile, setUserProfile] = useState({});
 
     useEffect(() => {
         let user = sessionStorage.getItem("user")
 
-        if (user === null || loggedIn === false) {
+        if (user === null) {
             navigate("/")
+            setErrorAlert(["Login first to view your profile"])
             return
+        } else {
+            setUserProfile(JSON.parse(user))
         }
-
-        user = JSON.parse(user);
-
-        var payload = {
-            id: user.id,
-        }
-        const headers = {
-            "Content-Type": "application/json",
-        }
-        const requestOptions = {
-            method: "POST",
-            headers: headers,
-            body: JSON.stringify(payload),
-        }
-        fetch(`${developmentBackendLink}profile`, requestOptions)
-            .then((response) => response.json())
-            .then((data) => {
-                setUserProfile(data.user);
-                console.log(data.user);
-            })
     }, [loggedIn])
 
     return (

@@ -32,7 +32,7 @@ function SignupPage() {
             body: JSON.stringify(payload),
         }
 
-        fetch(`${developmentBackendLink}sign-up`, requestOptions)
+        fetch(`${productionBackendLink}sign-up`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 if (data.error !== null) {

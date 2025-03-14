@@ -194,5 +194,4 @@ func (app Application) Login(w http.ResponseWriter, r *http.Request) {
 		app.errorJSON(w, err, http.StatusBadRequest)
 		return
 	}
-
 }
