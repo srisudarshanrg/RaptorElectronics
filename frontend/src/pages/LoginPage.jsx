@@ -28,7 +28,7 @@ function LoginPage() {
 
         var errors = []
 
-        fetch(`${productionBackendLink}login`, requestOptions)
+        fetch(`${developmentBackendLink}login`, requestOptions)
             .then((response) => {
                 if (response.status === 401) {
                     errors.push("Either credentials or password is incorrect");

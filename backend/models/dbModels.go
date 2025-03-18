@@ -15,9 +15,15 @@ type Laptop struct {
 }
 
 type Monitor struct {
-	ID        int         `json:"id"`
-	CreatedAt interface{} `json:"created_at,omitempty"`
-	UpdatedAt interface{} `json:"updated_at,omitempty"`
+	ID         int         `json:"id"`
+	Name       string      `json:"name"`
+	Company    string      `json:"company"`
+	Resolution string      `json:"resolution"`
+	Size       int         `json:"size"`
+	Price      int         `json:"price"`
+	ImageLink  string      `json:"image_link"`
+	CreatedAt  interface{} `json:"created_at,omitempty"`
+	UpdatedAt  interface{} `json:"updated_at,omitempty"`
 }
 
 type Keyboard struct {

@@ -1,0 +1,9 @@
+create_table("monitors") {
+    t.Column("id", "integer", {primary: true})
+    t.Column("name", "string")
+    t.Column("company", "string")
+    t.Column("resolution", "string")
+    t.Column("size", "integer")
+    t.Column("price", "integer")
+    t.Column("image_link", "string")
+}

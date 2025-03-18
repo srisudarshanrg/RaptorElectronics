@@ -9,20 +9,41 @@ import (
 
 func (app Application) GetAllItems() ([]models.Laptop, []models.Monitor, []models.Keyboard, []models.Mouse, error) {
 	queryLaptops := `select * from laptops`
-	rows, err := app.DB.Query(queryLaptops)
+	rowsLaptops, err := app.DB.Query(queryLaptops)
 	if err != nil {
 		return nil, nil, nil, nil, err
 	}
-	defer rows.Close()
+	defer rowsLaptops.Close()
+
+	queryMonitors := `select * from monitors`
+	rowsMonitors, err := app.DB.Query(queryMonitors)
+	if err != nil {
+		return nil, nil, nil, nil, err
+	}
+	defer rowsMonitors.Close()
+
+	// queryKeyboards := `select * from keyboards`
+	// rowsKeyboards, err := app.DB.Query(queryKeyboards)
+	// if err != nil {
+	// 	return nil, nil, nil, nil, err
+	// }
+	// defer rowsKeyboards.Close()
+
+	// queryMouses := `select * from mouses`
+	// rowsMouses, err := app.DB.Query(queryMouses)
+	// if err != nil {
+	// 	return nil, nil, nil, nil, err
+	// }
+	// defer rowsMouses.Close()
 
 	var laptops []models.Laptop
 	var monitors []models.Monitor
 	var keyboards []models.Keyboard
 	var mouses []models.Mouse
 
-	for rows.Next() {
+	for rowsLaptops.Next() {
 		var laptop models.Laptop
-		err = rows.Scan(
+		err = rowsLaptops.Scan(
 			&laptop.ID,
 			&laptop.ModelName,
 			&laptop.Processor,
@@ -40,6 +61,47 @@ func (app Application) GetAllItems() ([]models.Laptop, []models.Monitor, []model
 		}
 		laptops = append(laptops, laptop)
 	}
+
+	for rowsMonitors.Next() {
+		var monitor models.Monitor
+		err = rowsMonitors.Scan(
+			&monitor.ID,
+			&monitor.Name,
+			&monitor.Company,
+			&monitor.Resolution,
+			&monitor.Size,
+			&monitor.Price,
+			&monitor.ImageLink,
+			&monitor.CreatedAt,
+			&monitor.UpdatedAt,
+		)
+		if err != nil {
+			return nil, nil, nil, nil, err
+		}
+		monitors = append(monitors, monitor)
+	}
+
+	// for rowsKeyboards.Next() {
+	// 	var keyboard models.Keyboard
+	// 	err = rowsKeyboards.Scan(
+	// 		&keyboard.ID,
+	// 	)
+	// 	if err != nil {
+	// 		return nil, nil, nil, nil, err
+	// 	}
+	// 	keyboards = append(keyboards, keyboard)
+	// }
+
+	// for rowsMouses.Next() {
+	// 	var mouse models.Mouse
+	// 	err = rowsMouses.Scan(
+	// 		&mouse.ID,
+	// 	)
+	// 	if err != nil {
+	// 		return nil, nil, nil, nil, err
+	// 	}
+	// 	mouses = append(mouses, mouse)
+	// }
 
 	return laptops, monitors, keyboards, mouses, nil
 }

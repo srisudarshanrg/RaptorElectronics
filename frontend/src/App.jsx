@@ -51,7 +51,7 @@ function App() {
       body: JSON.stringify(payload),
     }
 
-    fetch(`${productionBackendLink}`)
+    fetch(`${developmentBackendLink}`)
   }
 
   return (
@@ -110,7 +110,7 @@ function App() {
                   </>
                 ) : (
                   <>
-                    <Link className="nav-margin" style={{textDecoration: "none", color: "#fff"}}>${user.amount}</Link>
+                    <Link className="nav-margin" style={{textDecoration: "none", color: "#fff"}}><i class="fa-solid fa-indian-rupee-sign"></i> {user.amount}</Link>
                     <Link to="/profile" className="nav-margin profile-link"><i className="fa-regular fa-user"></i></Link>
                     <button className="btn btn-danger nav-margin" onClick={logout}>Logout</button>
                   </>
