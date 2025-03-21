@@ -12,9 +12,9 @@ function App() {
   const [errorAlert, setErrorAlert] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const [addedToCart, setAddedToCart] = useState(false);
 
-  var user
-  user = sessionStorage.getItem("user")
+  var user = sessionStorage.getItem("user");
 
   const logout = () => {
     sessionStorage.removeItem("user");
@@ -32,7 +32,17 @@ function App() {
     } else {
       setLoggedIn(false);
     }
-  }, [user])
+
+    var cart = JSON.parse(localStorage.getItem("cart"))
+    console.log(cart)
+    if (cart !== null) {
+      setNumberCart(cart.length)
+    } else {
+      var newCart = []
+      localStorage.setItem("cart", JSON.stringify(newCart))
+      setNumberCart(0)
+    }
+  })
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
@@ -134,14 +144,16 @@ function App() {
         context={{
           developmentBackendLink,
           productionBackendLink,
-          numberCart,
-          setNumberCart,
           errorAlert,
           setErrorAlert,
           navigate,
           user,
           loggedIn,
           setLoggedIn,
+          numberCart,
+          setNumberCart,
+          addedToCart,
+          setAddedToCart,
         }}
       />
     </div>

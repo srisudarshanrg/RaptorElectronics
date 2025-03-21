@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
+import ProductCard from "../components/ProductCard";
+import "../static/styles/HomePage.css"
 
 function HomePage() {
     const { developmentBackendLink, productionBackendLink, user, loggedIn, setLoggedIn, } = useOutletContext();
@@ -36,31 +38,71 @@ function HomePage() {
 
     return (
         <>
-            <h1>This is the home page</h1>
-            <h2>Laptops</h2>
-            {laptops.map((laptop) => (
-                <p key={laptop.id}>{laptop.model_name}</p>
-            ))}
+            <div className="laptops product-category">
+                <h1 style={{textAlign: "center"}}>Laptops</h1>
+                <br />
+                <div className="product-row">
+                    {laptops.map((laptop) => {
+                        const info = (
+                            <div>
+                                <table className="table table-striped table-dark">
+                                    <thead className="">
+                                        <tr>
+                                        <td>Feature</td>
+                                        <td>Value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Processor</td>
+                                            <td>{laptop.processor}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>RAM</td>
+                                            <td>{laptop.ram} GB</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Storage</td>
+                                            <td>{laptop.storage} GB</td>
+                                        </tr>
+                                    </tbody>                                
+                                </table>
+                            </div>
+                        )
+                        return (
+                            <div key={laptop.id} className="product-col">
+                                <ProductCard
+                                    id={laptop.id}
+                                    name={`${laptop.company} ${laptop.name}`}
+                                    img={laptop.image_link}
+                                    info={info}
+                                    price={laptop.price}
+                                />
+                            </div>
+                        )
+                    })}
+                </div>
+            </div>
 
             <hr />
 
             <h2>Monitors</h2>
             {monitors.map((monitor) => (
-                <p key={monitor.id}>{monitor.model_name}</p>
+                <p key={monitor.id}>{monitor.name}</p>
             ))}
 
             <hr />
 
             <h2>Keyboards</h2>
             {keyboards.map((keyboard) => (
-                <p key={keyboard.id}>{keyboard.model_name}</p>
+                <p key={keyboard.id}>{keyboard.name}</p>
             ))}
 
             <hr />
 
             <h2>Mouses</h2>
             {mouses.map((mouse) => (
-                <p key={mouse.id}>{mouse.model_name}</p>
+                <p key={mouse.id}>{mouse.name}</p>
             ))}
         </>
     );

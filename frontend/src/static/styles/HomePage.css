@@ -1,0 +1,11 @@
+.product-category {
+    padding: 1%;
+}
+
+.product-row {
+    display: flex;
+    flex-direction: row;
+    gap: 2%;
+    padding-bottom: 1%;
+    overflow-x: scroll;
+}

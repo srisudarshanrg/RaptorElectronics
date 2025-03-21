@@ -2,7 +2,7 @@ package models
 
 type Laptop struct {
 	ID        int         `json:"id"`
-	ModelName string      `json:"model_name"`
+	ModelName string      `json:"name"`
 	Processor string      `json:"processor"`
 	RAM       int         `json:"ram"`
 	Storage   int         `json:"storage"`
