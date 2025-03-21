@@ -1,0 +1,11 @@
+create_table("keyboards") {
+    t.Column("id", "integer", {primary: true})
+    t.Column("name", "string")
+    t.Column("company", "string")
+    t.Column("type", "string")
+    t.Column("number_keys", "integer")
+    t.Column("color", "string")
+    t.Column("rgb_lighting", "bool")
+    t.Column("price", "integer")
+    t.Column("image_link", "string")
+}

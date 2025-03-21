@@ -22,18 +22,18 @@ func (app Application) GetAllItems() ([]models.Laptop, []models.Monitor, []model
 	}
 	defer rowsMonitors.Close()
 
-	// queryKeyboards := `select * from keyboards`
-	// rowsKeyboards, err := app.DB.Query(queryKeyboards)
-	// if err != nil {
-	// 	return nil, nil, nil, nil, err
-	// }
-	// defer rowsKeyboards.Close()
+	queryKeyboards := `select * from keyboards`
+	rowsKeyboards, err := app.DB.Query(queryKeyboards)
+	if err != nil {
+		return nil, nil, nil, nil, err
+	}
+	defer rowsKeyboards.Close()
 
-	// queryMouses := `select * from mouses`
-	// rowsMouses, err := app.DB.Query(queryMouses)
-	// if err != nil {
-	// 	return nil, nil, nil, nil, err
-	// }
+	queryMouses := `select * from mouses`
+	rowsMouses, err := app.DB.Query(queryMouses)
+	if err != nil {
+		return nil, nil, nil, nil, err
+	}
 	// defer rowsMouses.Close()
 
 	var laptops []models.Laptop
@@ -81,27 +81,47 @@ func (app Application) GetAllItems() ([]models.Laptop, []models.Monitor, []model
 		monitors = append(monitors, monitor)
 	}
 
-	// for rowsKeyboards.Next() {
-	// 	var keyboard models.Keyboard
-	// 	err = rowsKeyboards.Scan(
-	// 		&keyboard.ID,
-	// 	)
-	// 	if err != nil {
-	// 		return nil, nil, nil, nil, err
-	// 	}
-	// 	keyboards = append(keyboards, keyboard)
-	// }
+	for rowsKeyboards.Next() {
+		var keyboard models.Keyboard
+		err = rowsKeyboards.Scan(
+			&keyboard.ID,
+			&keyboard.Name,
+			&keyboard.Company,
+			&keyboard.Type,
+			&keyboard.NumberKeys,
+			&keyboard.Color,
+			&keyboard.RGBLighting,
+			&keyboard.Price,
+			&keyboard.ImageLink,
+			&keyboard.CreatedAt,
+			&keyboard.UpdatedAt,
+		)
+		if err != nil {
+			return nil, nil, nil, nil, err
+		}
+		keyboards = append(keyboards, keyboard)
+	}
 
-	// for rowsMouses.Next() {
-	// 	var mouse models.Mouse
-	// 	err = rowsMouses.Scan(
-	// 		&mouse.ID,
-	// 	)
-	// 	if err != nil {
-	// 		return nil, nil, nil, nil, err
-	// 	}
-	// 	mouses = append(mouses, mouse)
-	// }
+	for rowsMouses.Next() {
+		var mouse models.Mouse
+		err = rowsMouses.Scan(
+			&mouse.ID,
+			&mouse.Name,
+			&mouse.Company,
+			&mouse.SilentClicking,
+			&mouse.Gaming,
+			&mouse.RGBLighting,
+			&mouse.Color,
+			&mouse.Price,
+			&mouse.ImageLink,
+			&mouse.CreatedAt,
+			&mouse.UpdatedAt,
+		)
+		if err != nil {
+			return nil, nil, nil, nil, err
+		}
+		mouses = append(mouses, mouse)
+	}
 
 	return laptops, monitors, keyboards, mouses, nil
 }

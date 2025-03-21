@@ -37,8 +37,30 @@ function HomePage() {
     return (
         <>
             <h1>This is the home page</h1>
+            <h2>Laptops</h2>
             {laptops.map((laptop) => (
                 <p key={laptop.id}>{laptop.model_name}</p>
+            ))}
+
+            <hr />
+
+            <h2>Monitors</h2>
+            {monitors.map((monitor) => (
+                <p key={monitor.id}>{monitor.model_name}</p>
+            ))}
+
+            <hr />
+
+            <h2>Keyboards</h2>
+            {keyboards.map((keyboard) => (
+                <p key={keyboard.id}>{keyboard.model_name}</p>
+            ))}
+
+            <hr />
+
+            <h2>Mouses</h2>
+            {mouses.map((mouse) => (
+                <p key={mouse.id}>{mouse.model_name}</p>
             ))}
         </>
     );
