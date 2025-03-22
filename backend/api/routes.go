@@ -17,6 +17,7 @@ func (app *Application) Routes() http.Handler {
 	mux.Post("/profile", app.Profile)
 	mux.Post("/sign-up", app.SignUp)
 	mux.Post("/login", app.Login)
+	mux.Post("/cart", app.Cart)
 
 	return mux
 }

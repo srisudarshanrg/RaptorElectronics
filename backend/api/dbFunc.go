@@ -2,6 +2,7 @@ package api
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/srisudarshanrg/raptor-electronics/models"
@@ -187,4 +188,23 @@ func (app Application) GetUserByID(id int) (models.User, error) {
 		return models.User{}, err
 	}
 	return user, nil
+}
+
+func (app Application) GetCartItems(input []models.CartInput) ([]models.CartOutput, error) {
+	var cartOuput []models.CartOutput
+
+	for _, i := range input {
+		query := fmt.Sprintf("select id, name, company, price, image_link from %s where id=%d", i.Type, i.ID)
+		row := app.DB.QueryRow(query)
+
+		var output models.CartOutput
+		err := row.Scan(&output.ID, &output.Name, &output.Company, &output.Price, &output.ImageLink)
+		if err != nil {
+			return nil, err
+		}
+		output.Type = i.Type
+		cartOuput = append(cartOuput, output)
+	}
+
+	return cartOuput, nil
 }

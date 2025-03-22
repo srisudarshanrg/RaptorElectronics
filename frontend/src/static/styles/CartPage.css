@@ -1,0 +1,8 @@
+.cart {
+    font-family: "Open Sans", sans-serif;
+}
+
+.cart .row {
+    height: 60vh;
+    overflow-y: scroll;
+}

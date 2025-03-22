@@ -148,6 +148,41 @@ func (app Application) SignUp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (app Application) Cart(w http.ResponseWriter, r *http.Request) {
+	type payloadStruct struct {
+		Cart []models.CartInput `json:"cart"`
+	}
+
+	var cartInput payloadStruct
+
+	err := app.readJSON(r, &cartInput)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
+	}
+
+	items, err := app.GetCartItems(cartInput.Cart)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
+	}
+
+	payload := struct {
+		Items []models.CartOutput `json:"items"`
+	}{
+		Items: items,
+	}
+
+	err = app.writeJSON(w, http.StatusOK, payload)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
+	}
+}
+
 func (app Application) Login(w http.ResponseWriter, r *http.Request) {
 	type payloadStruct struct {
 		Credentials string `json:"credentials"`

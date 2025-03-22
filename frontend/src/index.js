@@ -9,7 +9,7 @@ import LaptopsPage from './pages/LaptopsPage';
 import MonitorsPage from './pages/MonitorsPage';
 import KeyboardsPage from './pages/KeyboardsPage';
 import MousesPage from './pages/MousesPage';
-import Cart from './pages/Cart';
+import CartPage from './pages/CartPage';
 import SearchPage from './pages/SearchPage';
 import LoginPage from './pages/LoginPage';
 import ProfilePage from './pages/ProfilePage';
@@ -26,7 +26,7 @@ const router = createBrowserRouter([
       {path: "/products/monitors", element: <MonitorsPage />},
       {path: "/products/keyboards", element: <KeyboardsPage />},
       {path: "/products/mouses", element: <MousesPage />},
-      {path: "/cart", element: <Cart />},
+      {path: "/cart", element: <CartPage />},
       {path: "/search", element: <SearchPage />},
       {path: "/profile", element: <ProfilePage />},
       {path: "/login", element: <LoginPage />},

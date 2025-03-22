@@ -35,7 +35,6 @@ function App() {
     }
 
     var cart = JSON.parse(localStorage.getItem("cart"))
-    console.log(cart)
     if (cart !== null) {
       setNumberCart(cart.length)
     } else {
@@ -133,7 +132,7 @@ function App() {
       </nav>
 
       {addedToCart &&
-        <div class="alert alert-success" role="alert" style={{position: "fixed", zIndex: "1000", width: "100%"}}>
+        <div className="alert alert-success" role="alert" style={{position: "fixed", zIndex: "1000", width: "100%"}}>
           <i className="fa-solid fa-check"></i> Added "{newCartItemName}" to cart
         </div>        
       }
@@ -165,6 +164,48 @@ function App() {
           setNewCartItemName,
         }}
       />
+
+      <div className="footer">
+        <div className="row" style={{width: "100%"}}>
+          <h2>Links</h2>
+          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <Link to="/" style={{fontSize: "1.2rem"}}>Home</Link>
+          </div>
+
+          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <Link to="/cart" style={{fontSize: "1.2rem"}}>Cart</Link>
+          </div>
+
+          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <Link to="/login" style={{fontSize: "1.2rem"}}>Login</Link>
+          </div>
+
+          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <Link to="/sign-up" style={{fontSize: "1.2rem"}}>Sign-Up</Link>
+          </div>
+        </div>
+
+        <hr />
+
+        <div className="row" style={{width: "100%"}}>
+          <h2>Products</h2>
+          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <Link to="/products/laptops" style={{fontSize: "1.2rem"}}>Laptops</Link>
+          </div>
+
+          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <Link to="/products/monitors" style={{fontSize: "1.2rem"}}>Monitors</Link>
+          </div>
+
+          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <Link to="/products/keyboards" style={{fontSize: "1.2rem"}}>Keyboards</Link>
+          </div>
+
+          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <Link to="/products/mouses" style={{fontSize: "1.2rem"}}>Mouses</Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
