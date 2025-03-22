@@ -13,6 +13,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
   const [addedToCart, setAddedToCart] = useState(false);
+  const [newCartItemName, setNewCartItemName] = useState("");
 
   var user = sessionStorage.getItem("user");
 
@@ -66,7 +67,7 @@ function App() {
 
   return (
     <div className="App">
-      <nav className="navbar navbar-dark navbar-expand-lg bg-dark">
+      <nav className="navbar navbar-dark navbar-expand-lg bg-dark">        
         <div className="container-fluid">
           <Link to="/" className="navbar-brand">RaptorElectronics</Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -131,6 +132,12 @@ function App() {
         </div>
       </nav>
 
+      {addedToCart &&
+        <div class="alert alert-success" role="alert" style={{position: "fixed", zIndex: "1000", width: "100%"}}>
+          <i className="fa-solid fa-check"></i> Added "{newCartItemName}" to cart
+        </div>        
+      }
+
       {errorAlert.length > 0 &&
         <>
           {errorAlert.map((error, index) => (
@@ -154,6 +161,8 @@ function App() {
           setNumberCart,
           addedToCart,
           setAddedToCart,
+          newCartItemName,
+          setNewCartItemName,
         }}
       />
     </div>

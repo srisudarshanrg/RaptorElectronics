@@ -77,6 +77,7 @@ function HomePage() {
                                     img={laptop.image_link}
                                     info={info}
                                     price={laptop.price}
+                                    type="laptops"
                                 />
                             </div>
                         )
