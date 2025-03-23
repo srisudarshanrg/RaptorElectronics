@@ -14,6 +14,7 @@ import SearchPage from './pages/SearchPage';
 import LoginPage from './pages/LoginPage';
 import ProfilePage from './pages/ProfilePage';
 import SignupPage from './pages/SignupPage';
+import BuyPage from './pages/BuyPage';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
       {path: "/products/keyboards", element: <KeyboardsPage />},
       {path: "/products/mouses", element: <MousesPage />},
       {path: "/cart", element: <CartPage />},
+      {path: "/buy", element: <BuyPage />},
       {path: "/search", element: <SearchPage />},
       {path: "/profile", element: <ProfilePage />},
       {path: "/login", element: <LoginPage />},

@@ -1,8 +1,9 @@
 package models
 
 type CartInput struct {
-	ID   int    `json:"id"`
-	Type string `json:"type"`
+	ID    int    `json:"id"`
+	Type  string `json:"type"`
+	Price int    `json:"price"`
 }
 
 type CartOutput struct {

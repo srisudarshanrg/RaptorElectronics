@@ -24,7 +24,11 @@ function CartPage() {
         fetch(`${developmentBackendLink}cart`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
-                setItems(data.items)
+                if (data.items === null) {
+                    setItems([])
+                } else {
+                    setItems(data.items)
+                }                
                 
                 if (data.error) {
                     console.log(data.error)

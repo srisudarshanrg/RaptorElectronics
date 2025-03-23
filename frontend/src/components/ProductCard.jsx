@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom"
 function ProductCard(props) {
     const { navigate, addedToCart, setAddedToCart, newCartItemName, setNewCartItemName } = useOutletContext();
 
-    const handleBuy = (id, name, type) => {
+    const handleBuy = (id, name, type, price) => {
         var cart = JSON.parse(localStorage.getItem("cart"))
         if (cart === null ) {
             console.log("pushing item to cart")
@@ -11,7 +11,7 @@ function ProductCard(props) {
             localStorage.setItem("cart", JSON.stringify(cartNew))
         } else {
             console.log("pushing item to cart already exists")
-            cart.push({id: id, type: type})
+            cart.push({id: id, type: type, price: price})
             localStorage.setItem("cart", JSON.stringify(cart))
         }
         setAddedToCart(true)
@@ -30,7 +30,7 @@ function ProductCard(props) {
                 <h5 className="card-title">{props.name}</h5>
                 <div className="card-text">{props.info}</div>
                 <h3><i className="fa-solid fa-indian-rupee-sign"></i> {props.price}</h3>
-                <button onClick={() => handleBuy(props.id, props.name, props.type)} href="#" className="btn btn-primary"><i className="fa-solid fa-cart-shopping"></i> Add to Cart</button>
+                <button onClick={() => handleBuy(props.id, props.name, props.type, props.price)} href="#" className="btn btn-primary"><i className="fa-solid fa-cart-shopping"></i> Add to Cart</button>
             </div>
         </div>
     )

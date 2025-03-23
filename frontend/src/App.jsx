@@ -165,7 +165,7 @@ function App() {
         }}
       />
 
-      <div className="footer">
+      <div className="footer" style={{marginTop: "3%"}}>
         <div className="row" style={{width: "100%"}}>
           <h2>Links</h2>
           <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">

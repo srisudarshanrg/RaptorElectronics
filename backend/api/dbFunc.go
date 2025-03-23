@@ -191,7 +191,7 @@ func (app Application) GetUserByID(id int) (models.User, error) {
 }
 
 func (app Application) GetCartItems(input []models.CartInput) ([]models.CartOutput, error) {
-	var cartOuput []models.CartOutput
+	var cartOutput []models.CartOutput
 
 	for _, i := range input {
 		query := fmt.Sprintf("select id, name, company, price, image_link from %s where id=%d", i.Type, i.ID)
@@ -203,8 +203,8 @@ func (app Application) GetCartItems(input []models.CartInput) ([]models.CartOutp
 			return nil, err
 		}
 		output.Type = i.Type
-		cartOuput = append(cartOuput, output)
+		cartOutput = append(cartOutput, output)
 	}
 
-	return cartOuput, nil
+	return cartOutput, nil
 }

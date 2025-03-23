@@ -33,7 +33,7 @@ func main() {
 	session.Cookie.Secure = app.InProduction
 
 	// application setup
-	app.DevelopmentFrontendLink = "http://localhost:3000"
+	app.DevelopmentFrontendLink = "http://localhost:5000"
 	app.ProductionFrontendLink = "https://raptorelectronics.sudarshanraptor.world"
 	app.DatabaseDSN = fmt.Sprintf("host=postgresql-raptor.alwaysdata.net port=5432 dbname=raptor_electronics user=raptor password=%s", dbPassword)
 	app.Session = session
