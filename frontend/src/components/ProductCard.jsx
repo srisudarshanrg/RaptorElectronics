@@ -7,11 +7,11 @@ function ProductCard(props) {
         var cart = JSON.parse(localStorage.getItem("cart"))
         if (cart === null ) {
             console.log("pushing item to cart")
-            var cartNew = [{id: id, type: type}]
+            var cartNew = [{id: id, type: type, name: name, price: price}]
             localStorage.setItem("cart", JSON.stringify(cartNew))
         } else {
             console.log("pushing item to cart already exists")
-            cart.push({id: id, type: type, price: price})
+            cart.push({id: id, type: type, name: name, price: price})
             localStorage.setItem("cart", JSON.stringify(cart))
         }
         setAddedToCart(true)

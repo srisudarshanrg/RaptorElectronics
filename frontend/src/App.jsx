@@ -42,6 +42,11 @@ function App() {
       localStorage.setItem("cart", JSON.stringify(newCart))
       setNumberCart(0)
     }
+
+    var userItems = JSON.parse(localStorage.getItem("userItems"))
+    if (userItems !== null) {
+      localStorage.setItem("userItems", JSON.stringify([]))
+    }
   })
 
   const handleSearchSubmit = (event) => {

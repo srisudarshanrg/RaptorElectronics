@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useOutletContext } from "react-router-dom"
+import { Link, useOutletContext } from "react-router-dom"
 import CartCard from "../components/CartCard";
 import "../static/styles/CartPage.css"
 
@@ -62,7 +62,7 @@ function CartPage() {
 
                     <hr />
                     
-                    <button className="btn btn-primary">Proceed to buy</button>
+                    <Link to="/buy" className="btn btn-primary">Proceed to buy</Link>
                 </div>
             : <p style={{marginLeft: "1%", marginTop: "1%"}}>cart is empty...</p>
             }
