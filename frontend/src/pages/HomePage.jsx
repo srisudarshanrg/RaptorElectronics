@@ -73,7 +73,8 @@ function HomePage() {
                             <div key={laptop.id} className="product-col">
                                 <ProductCard
                                     id={laptop.id}
-                                    name={`${laptop.company} ${laptop.name}`}
+                                    name={laptop.name}
+                                    company={laptop.company}
                                     img={laptop.image_link}
                                     info={info}
                                     price={laptop.price}
@@ -118,7 +119,8 @@ function HomePage() {
                             <div key={monitor.id} className="product-col">
                                 <ProductCard
                                     id={monitor.id}
-                                    name={`${monitor.company} ${monitor.name}`}
+                                    name={monitor.name}
+                                    company={monitor.company}
                                     img={monitor.image_link}
                                     info={info}
                                     price={monitor.price}
@@ -172,7 +174,8 @@ function HomePage() {
                             <div key={keyboard.id} className="product-col">
                                 <ProductCard
                                     id={keyboard.id}
-                                    name={`${keyboard.company} ${keyboard.name}`}
+                                    name={keyboard.name}
+                                    company={keyboard.company}
                                     img={keyboard.image_link}
                                     info={info}
                                     price={keyboard.price}
@@ -228,7 +231,8 @@ function HomePage() {
                             <div key={mouse.id} className="product-col">
                                 <ProductCard
                                     id={mouse.id}
-                                    name={`${mouse.company} ${mouse.name}`}
+                                    name={mouse.name}
+                                    company={mouse.company}
                                     img={mouse.image_link}
                                     info={info}
                                     price={mouse.price}

@@ -1,0 +1,13 @@
+create_table("user_items") {
+    t.Column("id", "integer", {primary: true})
+    t.Column("item_id", "integer")
+    t.Column("item_category", "string")
+    t.Column("item_name", "string")
+    t.Column("price", "integer")
+    t.Column("user_id", "integer")
+}
+
+add_foreign_key("user_items", "user_id", {"users": ["id"]}, {
+    "on_delete": "cascade",
+    "on_update": "cascade",
+})

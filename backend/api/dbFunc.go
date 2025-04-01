@@ -3,6 +3,7 @@ package api
 import (
 	"errors"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/srisudarshanrg/raptor-electronics/models"
@@ -207,4 +208,146 @@ func (app Application) GetCartItems(input []models.CartInput) ([]models.CartOutp
 	}
 
 	return cartOutput, nil
+}
+
+func (app Application) AddBoughtItem(items []models.BoughtItemInput) (bool, error) {
+	query := `insert into user_items(item_id, item_type, item_name, price, user_id) values($1, $2, $3, $4, $5)`
+
+	for _, i := range items {
+		_, err := app.DB.Exec(query, i.ItemID, i.ItemType, i.ItemName, i.Price, i.UserID)
+		if err != nil {
+			return false, err
+		}
+	}
+	return true, nil
+}
+
+func (app Application) UpdateUserAmount(userID int, amount int) error {
+	query := `update users set amount=$1 where id=$2`
+	_, err := app.DB.Exec(query, amount, userID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (app Application) GetAllBoughtItems(userID int) ([]models.BoughtItem, error) {
+	query := `select * from user_items where user_id=$1`
+	rows, err := app.DB.Query(query, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var items []models.BoughtItem
+	for rows.Next() {
+		var item models.BoughtItem
+		err = rows.Scan(
+			&item.ID,
+			&item.ItemID,
+			&item.ItemType,
+			&item.ItemName,
+			&item.Price,
+			&item.UserID,
+			&item.CreatedAt,
+			&item.UpdatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		items = append(items, item)
+	}
+
+	return items, nil
+}
+
+func (app Application) GetSingleProductInfo(typeProduct string, name string) (interface{}, error) {
+	query := fmt.Sprintf(`select * from %s where name='%s'`, typeProduct, name)
+	log.Println(query)
+	row := app.DB.QueryRow(query)
+
+	var err error
+	var item interface{}
+
+	switch typeProduct {
+	case "laptops":
+		var laptop models.Laptop
+		err = row.Scan(
+			&laptop.ID,
+			&laptop.ModelName,
+			&laptop.Processor,
+			&laptop.RAM,
+			&laptop.Storage,
+			&laptop.Display,
+			&laptop.Price,
+			&laptop.Company,
+			&laptop.ImageLink,
+			&laptop.CreatedAt,
+			&laptop.UpdatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		item = laptop
+
+	case "monitors":
+		var monitor models.Monitor
+		err = row.Scan(
+			&monitor.ID,
+			&monitor.Name,
+			&monitor.Company,
+			&monitor.Resolution,
+			&monitor.Size,
+			&monitor.Price,
+			&monitor.ImageLink,
+			&monitor.CreatedAt,
+			&monitor.UpdatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		item = monitor
+
+	case "keyboards":
+		var keyboard models.Keyboard
+		err = row.Scan(
+			&keyboard.ID,
+			&keyboard.Name,
+			&keyboard.Company,
+			&keyboard.Type,
+			&keyboard.NumberKeys,
+			&keyboard.Color,
+			&keyboard.RGBLighting,
+			&keyboard.Price,
+			&keyboard.ImageLink,
+			&keyboard.CreatedAt,
+			&keyboard.UpdatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		item = keyboard
+
+	case "mouses":
+		var mouse models.Mouse
+		err = row.Scan(
+			&mouse.ID,
+			&mouse.Name,
+			&mouse.Company,
+			&mouse.SilentClicking,
+			&mouse.Gaming,
+			&mouse.RGBLighting,
+			&mouse.Color,
+			&mouse.Price,
+			&mouse.ImageLink,
+			&mouse.CreatedAt,
+			&mouse.UpdatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		item = mouse
+	}
+
+	return item, nil
 }

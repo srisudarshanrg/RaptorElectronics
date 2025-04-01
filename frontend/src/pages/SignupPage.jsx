@@ -3,7 +3,7 @@ import "../static/styles/LoginPage_SignupPage.css"
 import { useEffect } from "react";
 
 function SignupPage() {
-    const { errorAlert, setErrorAlert, productionBackendLink, developmentBackendLink, user, navigate  } = useOutletContext();
+    const { errorAlert, setErrorAlert, productionBackendLink, developmentBackendLink, user, navigate, setSuccessAlert  } = useOutletContext();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -45,6 +45,7 @@ function SignupPage() {
                 } else {
                     console.log("signed up");
                     navigate("/login");
+                    setSuccessAlert("User account created successfully")
                 }
             })
             .catch((error) => {

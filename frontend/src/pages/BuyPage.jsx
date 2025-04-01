@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useOutletContext, useRouteLoaderData } from "react-router-dom"
 
 function BuyPage() {
-    const { developmentBackendLink, productionBackendLink, navigate, setErrorAlert, errorAlert } = useOutletContext();
+    const { developmentBackendLink, productionBackendLink, navigate, setErrorAlert, errorAlert,
+        setSuccessAlert } = useOutletContext();
     
     const [cart, setCart] = useState([]);
 
@@ -30,30 +31,61 @@ function BuyPage() {
         var user = JSON.parse(sessionStorage.getItem("user"))
         var new_amount = user.amount - totalCost
         if (new_amount < 0) {
-            setErrorAlert("Cannot buy products as total cost is more than the amount you have")
+            setErrorAlert(["Cannot buy products as total cost is more than the amount you have"])
+            return
+        }
+        user.amount = new_amount
+        sessionStorage.setItem("user", JSON.stringify(user))
+        console.log(new_amount, user.amount)
+
+        var toBeBought = JSON.parse(localStorage.getItem("cart"))
+        if (toBeBought.length === 0) {
+            setErrorAlert(["Add items to cart to buy them"])
             return
         }
 
-        var userItems = JSON.parse(localStorage.getItem("userItems"))
+        var allItems = []
 
-        userItems.push(cartRecieved)
+        toBeBought.forEach((t) => {
+            var newItem = {
+                "item_id": t.id,
+                "item_type": t.type,
+                "item_name": t.name,
+                "price": t.price,
+                "user_id": user.id, 
+            }
+            allItems.push(newItem)
+        })
 
-        localStorage.setItem("userItems", JSON.stringify(userItems))
-        var newCart = []
-        localStorage.setItem("cart", JSON.stringify([]))
-        var newUser = {
-            "id": user.id,
-            "username": user.username,
-            "email": user.email,
-            "password": user.password,
-            "join_date": user.join_date,
-            "amount": new_amount,
-            "created_at": user.created_at,
-            "updated_at": user.updated_at,
+        const headers = {
+            "Content-Type": "application/json",
         }
-        sessionStorage.setItem("user", JSON.stringify(newUser))
-
-        window.location.reload(true)
+        var items = {
+            items: allItems,
+            user_update: {
+                "id": user.id,
+                "amount": user.amount,
+            },
+        }
+        const requestOptions = {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify(items),
+        }
+        fetch(`${developmentBackendLink}buy`, requestOptions)
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.confirmation === true) {
+                    var newCart = []
+                    localStorage.setItem("cart", JSON.stringify(newCart))
+                    window.location.reload(false)
+                } else {
+                    setErrorAlert("An unexpected error occurred. Please try again")
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
     return (

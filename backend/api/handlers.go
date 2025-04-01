@@ -62,6 +62,204 @@ func (app Application) Profile(w http.ResponseWriter, r *http.Request) {
 	app.writeJSON(w, http.StatusOK, payload)
 }
 
+func (app Application) Cart(w http.ResponseWriter, r *http.Request) {
+	type payloadStruct struct {
+		Cart []models.CartInput `json:"cart"`
+	}
+
+	var cartInput payloadStruct
+
+	err := app.readJSON(r, &cartInput)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
+	}
+
+	items, err := app.GetCartItems(cartInput.Cart)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
+	}
+
+	payload := struct {
+		Items []models.CartOutput `json:"items"`
+	}{
+		Items: items,
+	}
+
+	err = app.writeJSON(w, http.StatusOK, payload)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
+	}
+}
+
+func (app Application) Buy(w http.ResponseWriter, r *http.Request) {
+	type userUpdate struct {
+		ID     int `json:"id"`
+		Amount int `json:"amount"`
+	}
+
+	type payloadStruct struct {
+		Items []models.BoughtItemInput `json:"items"`
+		User  userUpdate               `json:"user_update"`
+	}
+
+	var itemsInput payloadStruct
+
+	err := app.readJSON(r, &itemsInput)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
+	}
+
+	confirm, err := app.AddBoughtItem(itemsInput.Items)
+	if err != nil || !confirm {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
+	}
+
+	err = app.UpdateUserAmount(itemsInput.User.ID, itemsInput.User.Amount)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
+	}
+
+	responseStruct := struct {
+		Confirmation bool `json:"confirmation"`
+	}{
+		Confirmation: confirm,
+	}
+	app.writeJSON(w, http.StatusOK, responseStruct)
+}
+
+func (app Application) BoughtItems(w http.ResponseWriter, r *http.Request) {
+	type payloadStruct struct {
+		UserID int `json:"user_id"`
+	}
+
+	var userInput payloadStruct
+
+	err := app.readJSON(r, &userInput)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	items, err := app.GetAllBoughtItems(userInput.UserID)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	var payload = struct {
+		Items  []models.BoughtItem `json:"items"`
+		Length int                 `json:"length"`
+	}{
+		Items:  items,
+		Length: len(items),
+	}
+
+	err = app.writeJSON(w, http.StatusOK, payload)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+}
+
+func (app Application) ProductInfo(w http.ResponseWriter, r *http.Request) {
+	type payloadInput struct {
+		Type string `json:"type"`
+		Name string `json:"name"`
+	}
+
+	var input payloadInput
+
+	err := app.readJSON(r, &input)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusUnauthorized)
+		return
+	}
+
+	item, err := app.GetSingleProductInfo(input.Type, input.Name)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusUnauthorized)
+		return
+	}
+
+	log.Println("item:", item)
+
+	var payload = struct {
+		Item interface{} `json:"item"`
+	}{
+		Item: item,
+	}
+
+	err = app.writeJSON(w, http.StatusOK, payload)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusUnauthorized)
+		return
+	}
+}
+
+func (app Application) Login(w http.ResponseWriter, r *http.Request) {
+	type payloadStruct struct {
+		Credentials string `json:"credentials"`
+		Password    string `json:"password"`
+	}
+
+	var userInput payloadStruct
+
+	err := app.readJSON(r, &userInput)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusUnauthorized)
+		return
+	}
+
+	var userOutput interface{}
+
+	user, check, err := app.UserLogin(userInput.Credentials, userInput.Password)
+	if err != nil {
+		if err.Error() == "Either credentials or password is incorrect" {
+			app.errorJSON(w, err, http.StatusUnauthorized)
+			return
+		} else {
+			log.Println(err)
+			app.errorJSON(w, err, http.StatusBadRequest)
+			return
+		}
+	}
+
+	if check {
+		userOutput = user
+	} else {
+		userOutput = nil
+	}
+
+	var payload = struct {
+		User interface{} `json:"user"`
+	}{
+		User: userOutput,
+	}
+
+	err = app.writeJSON(w, http.StatusOK, payload)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
+	}
+}
+
 func (app Application) SignUp(w http.ResponseWriter, r *http.Request) {
 	type payloadStruct struct {
 		Username       string `json:"username"`
@@ -138,89 +336,6 @@ func (app Application) SignUp(w http.ResponseWriter, r *http.Request) {
 		Error:   errorStatus,
 		User:    user,
 		Success: success,
-	}
-
-	err = app.writeJSON(w, http.StatusOK, payload)
-	if err != nil {
-		log.Println(err)
-		app.errorJSON(w, err, http.StatusBadRequest)
-		return
-	}
-}
-
-func (app Application) Cart(w http.ResponseWriter, r *http.Request) {
-	type payloadStruct struct {
-		Cart []models.CartInput `json:"cart"`
-	}
-
-	var cartInput payloadStruct
-
-	err := app.readJSON(r, &cartInput)
-	if err != nil {
-		log.Println(err)
-		app.errorJSON(w, err, http.StatusBadRequest)
-		return
-	}
-
-	items, err := app.GetCartItems(cartInput.Cart)
-	if err != nil {
-		log.Println(err)
-		app.errorJSON(w, err, http.StatusBadRequest)
-		return
-	}
-
-	payload := struct {
-		Items []models.CartOutput `json:"items"`
-	}{
-		Items: items,
-	}
-
-	err = app.writeJSON(w, http.StatusOK, payload)
-	if err != nil {
-		log.Println(err)
-		app.errorJSON(w, err, http.StatusBadRequest)
-		return
-	}
-}
-
-func (app Application) Login(w http.ResponseWriter, r *http.Request) {
-	type payloadStruct struct {
-		Credentials string `json:"credentials"`
-		Password    string `json:"password"`
-	}
-
-	var userInput payloadStruct
-
-	err := app.readJSON(r, &userInput)
-	if err != nil {
-		log.Println(err)
-		return
-	}
-
-	var userOutput interface{}
-
-	user, check, err := app.UserLogin(userInput.Credentials, userInput.Password)
-	if err != nil {
-		if err.Error() == "Either credentials or password is incorrect" {
-			app.errorJSON(w, err, http.StatusUnauthorized)
-			return
-		} else {
-			log.Println(err)
-			app.errorJSON(w, err, http.StatusBadRequest)
-			return
-		}
-	}
-
-	if check {
-		userOutput = user
-	} else {
-		userOutput = nil
-	}
-
-	var payload = struct {
-		User interface{} `json:"user"`
-	}{
-		User: userOutput,
 	}
 
 	err = app.writeJSON(w, http.StatusOK, payload)

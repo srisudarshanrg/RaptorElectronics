@@ -14,6 +14,7 @@ function App() {
   const navigate = useNavigate();
   const [addedToCart, setAddedToCart] = useState(false);
   const [newCartItemName, setNewCartItemName] = useState("");
+  const [successAlert, setSuccessAlert] = useState("");
 
   var user = sessionStorage.getItem("user");
 
@@ -41,11 +42,6 @@ function App() {
       var newCart = []
       localStorage.setItem("cart", JSON.stringify(newCart))
       setNumberCart(0)
-    }
-
-    var userItems = JSON.parse(localStorage.getItem("userItems"))
-    if (userItems !== null) {
-      localStorage.setItem("userItems", JSON.stringify([]))
     }
   })
 
@@ -98,9 +94,14 @@ function App() {
                   <li><Link to="/products/keyboards" className="dropdown-item">Keyboards</Link></li>
                   <li><Link to="/products/mouses" className="dropdown-item">Mouses</Link></li>
                 </ul>
-              </li>             
+              </li>   
+              {loggedIn && 
+                <li className="nav-item">
+                  <Link to="/bought-items" className="nav-link nav-margin">Your Items</Link>
+                </li>
+              }          
             </ul>
-
+            
             <ul className="navbar-nav">
               <form className="d-flex InputContainer" role="search" onSubmit={handleSearchSubmit}>
                 <input type="text" name="text" className="input-search" id="searchBox" placeholder="Search" onChange={(event) => {setSearchQuery(event.target.value)}} />                
@@ -142,6 +143,12 @@ function App() {
         </div>        
       }
 
+      {successAlert && (
+        <>
+          <Alert color="success" message={<><i className="fa-solid fa-check"></i> {successAlert}</>} />
+        </>  
+      )}
+
       {errorAlert.length > 0 &&
         <>
           {errorAlert.map((error, index) => (
@@ -167,6 +174,7 @@ function App() {
           setAddedToCart,
           newCartItemName,
           setNewCartItemName,
+          setSuccessAlert,
         }}
       />
 
