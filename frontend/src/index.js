@@ -17,6 +17,8 @@ import SignupPage from './pages/SignupPage';
 import BuyPage from './pages/BuyPage';
 import YourItems from './pages/YourItemsPage';
 import ItemPage from './pages/ItemPage';
+import AmountPage from './pages/AmountPage';
+import SpendingsPage from './pages/SpendingsPage';
 
 const router = createBrowserRouter([
   {
@@ -37,6 +39,8 @@ const router = createBrowserRouter([
       {path: "/sign-up", element: <SignupPage />},
       {path: "/bought-items", element: <YourItems />},
       {path: "/product/:type/:name", element: <ItemPage />},
+      {path: "/amount", element: <AmountPage />},
+      {path: "/spendings", element: <SpendingsPage />}
     ]
   }
 ]);

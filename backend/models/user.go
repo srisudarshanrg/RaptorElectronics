@@ -10,3 +10,9 @@ type User struct {
 	CreatedAt interface{} `json:"created_at,omitempty"`
 	UpdatedAt interface{} `json:"updated_at,omitempty"`
 }
+
+type AmountBoughtItems struct {
+	ItemType  string `json:"item_type"`
+	ItemName  string `json:"item_name"`
+	ItemPrice int    `json:"item_price"`
+}

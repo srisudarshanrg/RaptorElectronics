@@ -34,6 +34,30 @@ function ItemPage() {
                 console.log(error)
             })
     }, [])
+    
+    const requestOptions = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+    }
+    fetch(`${developmentBackendLink}`, requestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.errors) {
+                console.log(data.errors)
+            } else {
+                console.log(data)
+            }
+        })
+
+    if (item) {
+        console.log(item)
+    } else {
+        console.log("item not recieved")
+    }
+    
+    if (item !== null)
 
     console.log(item)
 

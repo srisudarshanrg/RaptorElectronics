@@ -1,6 +1,7 @@
 package api
 
 import (
+	"database/sql"
 	"errors"
 	"fmt"
 	"log"
@@ -36,7 +37,7 @@ func (app Application) GetAllItems() ([]models.Laptop, []models.Monitor, []model
 	if err != nil {
 		return nil, nil, nil, nil, err
 	}
-	// defer rowsMouses.Close()
+	defer rowsMouses.Close()
 
 	var laptops []models.Laptop
 	var monitors []models.Monitor
@@ -104,6 +105,9 @@ func (app Application) GetAllItems() ([]models.Laptop, []models.Monitor, []model
 		keyboards = append(keyboards, keyboard)
 	}
 
+	for key, value := range keyboards {
+		log.Println(key, value)
+	}
 	for rowsMouses.Next() {
 		var mouse models.Mouse
 		err = rowsMouses.Scan(
@@ -231,6 +235,112 @@ func (app Application) UpdateUserAmount(userID int, amount int) error {
 	return nil
 }
 
+func (app Application) GetAllItemsWithType(itemType string) (interface{}, error) {
+	query := fmt.Sprintf("select * from %s", itemType)
+	rows, err := app.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+
+	switch itemType {
+	case "laptops":
+		var laptops []models.Laptop
+
+		for rows.Next() {
+			var laptop models.Laptop
+			err = rows.Scan(
+				&laptop.ID,
+				&laptop.ModelName,
+				&laptop.Processor,
+				&laptop.RAM,
+				&laptop.Storage,
+				&laptop.Display,
+				&laptop.Price,
+				&laptop.Company,
+				&laptop.ImageLink,
+				&laptop.CreatedAt,
+				&laptop.UpdatedAt,
+			)
+			if err != nil {
+				return nil, err
+			}
+			laptops = append(laptops, laptop)
+		}
+		return laptops, nil
+	case "monitors":
+		var monitors []models.Monitor
+
+		for rows.Next() {
+			var monitor models.Monitor
+			err = rows.Scan(
+				&monitor.ID,
+				&monitor.Name,
+				&monitor.Company,
+				&monitor.Resolution,
+				&monitor.Size,
+				&monitor.Price,
+				&monitor.ImageLink,
+				&monitor.CreatedAt,
+				&monitor.UpdatedAt,
+			)
+			if err != nil {
+				return nil, err
+			}
+			monitors = append(monitors, monitor)
+		}
+		return monitors, nil
+	case "keyboards":
+		var keyboards []models.Keyboard
+
+		for rows.Next() {
+			var keyboard models.Keyboard
+			err = rows.Scan(
+				&keyboard.ID,
+				&keyboard.Name,
+				&keyboard.Company,
+				&keyboard.Type,
+				&keyboard.NumberKeys,
+				&keyboard.Color,
+				&keyboard.RGBLighting,
+				&keyboard.Price,
+				&keyboard.ImageLink,
+				&keyboard.CreatedAt,
+				&keyboard.UpdatedAt,
+			)
+			if err != nil {
+				return nil, err
+			}
+			keyboards = append(keyboards, keyboard)
+		}
+		return keyboards, nil
+	case "mouses":
+		var mouses []models.Mouse
+
+		for rows.Next() {
+			var mouse models.Mouse
+			err = rows.Scan(
+				&mouse.ID,
+				&mouse.Name,
+				&mouse.Company,
+				&mouse.SilentClicking,
+				&mouse.Gaming,
+				&mouse.RGBLighting,
+				&mouse.Color,
+				&mouse.Price,
+				&mouse.ImageLink,
+				&mouse.CreatedAt,
+				&mouse.UpdatedAt,
+			)
+			if err != nil {
+				return nil, err
+			}
+			mouses = append(mouses, mouse)
+		}
+		return mouses, nil
+	}
+	return nil, nil
+}
+
 func (app Application) GetAllBoughtItems(userID int) ([]models.BoughtItem, error) {
 	query := `select * from user_items where user_id=$1`
 	rows, err := app.DB.Query(query, userID)
@@ -350,4 +460,80 @@ func (app Application) GetSingleProductInfo(typeProduct string, name string) (in
 	}
 
 	return item, nil
+}
+
+func (app Application) GetAmountBoughtItems(userID int) ([]models.AmountBoughtItems, error) {
+	query := `select item_type, item_name, price from user_items where user_id=$1`
+	rows, err := app.DB.Query(query, userID)
+	if err != nil {
+		return nil, err
+	}
+
+	var items []models.AmountBoughtItems
+	for rows.Next() {
+		var item models.AmountBoughtItems
+		err = rows.Scan(
+			&item.ItemType,
+			&item.ItemName,
+			&item.ItemPrice,
+		)
+		if err != nil {
+			return nil, err
+		}
+		items = append(items, item)
+	}
+	return items, nil
+}
+
+// Search searches for item in the database based on a given search query
+func (app Application) Search(searchQuery string) ([]models.ItemBrief, error) {
+	searchArg := "%" + searchQuery + "%"
+
+	// laptops query
+	queryLaptops := `select id, name, company, price, image_link from laptops where lower(name) like $1`
+	rowsLaptops, err := app.DB.Query(queryLaptops, searchArg)
+	if err != nil {
+		return nil, err
+	}
+	defer rowsLaptops.Close()
+
+	// monitors query
+	queryMonitors := `select id, name, company, price, image_link from monitors where lower(name) like $1`
+	rowsMonitors, err := app.DB.Query(queryMonitors, searchArg)
+	if err != nil {
+		return nil, err
+	}
+	defer rowsMonitors.Close()
+
+	// keyboards query
+	queryKeyboards := `select id, name, company, price, image_link from keyboards where lower(name) like $1`
+	rowsKeyboards, err := app.DB.Query(queryKeyboards, searchArg)
+	if err != nil {
+		return nil, err
+	}
+	defer rowsKeyboards.Close()
+
+	// mouses query
+	queryMouses := `select id, name, company, price, image_link from mouses where lower(name) like $1`
+	rowsMouses, err := app.DB.Query(queryMouses, searchArg)
+	if err != nil {
+		return nil, err
+	}
+	defer rowsMouses.Close()
+
+	totalList := []*sql.Rows{rowsLaptops, rowsMonitors, rowsKeyboards, rowsMouses}
+	var items []models.ItemBrief
+	const name = "sudarshan"
+	for _, itemRow := range totalList {
+		var item models.ItemBrief
+		itemRow.Scan(
+			item.ID,
+			item.Name,
+			item.Company,
+			item.Price,
+			item.ImageLink,
+		)
+	}
+
+	return items, nil
 }

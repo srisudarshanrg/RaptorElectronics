@@ -25,10 +25,47 @@ func (app Application) Home(w http.ResponseWriter, r *http.Request) {
 		Keyboards: keyboards,
 		Mouses:    mouses,
 	}
+ 
+	err = app.writeJSON(w, http.StatusOK, payload)
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+func (app Application) SingleProductType(w http.ResponseWriter, r *http.Request) {
+	type Input struct {
+		Type string `json:"type"`
+	}
+
+	var input Input
+
+	err := app.readJSON(r, &input)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
+	}
+
+	items, err := app.GetAllItemsWithType(input.Type)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
+	}
+
+	payload := struct {
+		Items interface{} `json:"items"`
+		Type  string      `json:"type"`
+	}{
+		Items: items,
+		Type:  input.Type,
+	}
 
 	err = app.writeJSON(w, http.StatusOK, payload)
 	if err != nil {
 		log.Println(err)
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
 	}
 }
 
@@ -250,6 +287,43 @@ func (app Application) Login(w http.ResponseWriter, r *http.Request) {
 		User interface{} `json:"user"`
 	}{
 		User: userOutput,
+	}
+
+	err = app.writeJSON(w, http.StatusOK, payload)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
+	}
+}
+
+func (app Application) Amount(w http.ResponseWriter, r *http.Request) {
+	type payloadStruct struct {
+		UserID int `json:"id"`
+	}
+
+	var userInput payloadStruct
+
+	err := app.readJSON(r, &userInput)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusUnauthorized)
+		return
+	}
+
+	items, err := app.GetAmountBoughtItems(userInput.UserID)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusUnauthorized)
+		return
+	}
+
+	var payload = struct {
+		Items  []models.AmountBoughtItems `json:"items"`
+		Length int                        `json:"length"`
+	}{
+		Items:  items,
+		Length: len(items),
 	}
 
 	err = app.writeJSON(w, http.StatusOK, payload)

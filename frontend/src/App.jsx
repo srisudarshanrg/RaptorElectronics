@@ -62,7 +62,11 @@ function App() {
       body: JSON.stringify(payload),
     }
 
-    fetch(`${developmentBackendLink}`)
+    fetch(`${developmentBackendLink}search`, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        
+      })
   }
 
   return (
@@ -79,11 +83,6 @@ function App() {
               <li className="nav-item">
                 <Link to="" className="nav-link nav-margin" aria-current="page">Home</Link>
               </li>
-
-              <li className="nav-item">
-                <Link to="/products" className="nav-link nav-margin">Products</Link>
-              </li>
-
               <li className="nav-item dropdown">
                 <Link className="nav-link dropdown-toggle nav-margin" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Product Categories
@@ -94,12 +93,17 @@ function App() {
                   <li><Link to="/products/keyboards" className="dropdown-item">Keyboards</Link></li>
                   <li><Link to="/products/mouses" className="dropdown-item">Mouses</Link></li>
                 </ul>
-              </li>   
-              {loggedIn && 
-                <li className="nav-item">
-                  <Link to="/bought-items" className="nav-link nav-margin">Your Items</Link>
-                </li>
-              }          
+              </li>
+              {loggedIn &&
+                <>
+                  <li className="nav-item">
+                    <Link to="/bought-items" className="nav-link nav-margin">Purchases</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/spendings" className="nav-link nav-margin">Spendings</Link>
+                  </li>
+                </>
+              }            
             </ul>
             
             <ul className="navbar-nav">
