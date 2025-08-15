@@ -22,6 +22,7 @@ func (app *Application) Routes() http.Handler {
 	mux.Post("/bought-items", app.BoughtItems)
 	mux.Post("/product-info", app.ProductInfo)
 	mux.Post("/single-product-type", app.SingleProductType)
+	mux.Post("/spendings", app.Spendings)
 
 	return mux
 }

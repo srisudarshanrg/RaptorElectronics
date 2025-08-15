@@ -485,6 +485,10 @@ func (app Application) GetAmountBoughtItems(userID int) ([]models.AmountBoughtIt
 	return items, nil
 }
 
+func (app Application) GetSpendingsInfo(userID int) error {
+	return errors.New("hello")
+}
+
 // Search searches for item in the database based on a given search query
 func (app Application) Search(searchQuery string) ([]models.ItemBrief, error) {
 	searchArg := "%" + searchQuery + "%"

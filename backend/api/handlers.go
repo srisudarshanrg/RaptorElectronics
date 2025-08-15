@@ -25,7 +25,7 @@ func (app Application) Home(w http.ResponseWriter, r *http.Request) {
 		Keyboards: keyboards,
 		Mouses:    mouses,
 	}
- 
+
 	err = app.writeJSON(w, http.StatusOK, payload)
 	if err != nil {
 		log.Println(err)
@@ -97,6 +97,20 @@ func (app Application) Profile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	app.writeJSON(w, http.StatusOK, payload)
+}
+func (app Application) Spendings(w http.ResponseWriter, r *http.Request) {
+	type Input struct {
+		UserID int `json:"user_id"`
+	}
+	var inputPayload Input
+	err := app.readJSON(r, &inputPayload)
+	if err != nil {
+		log.Println(err)
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
+	}
+
+	
 }
 
 func (app Application) Cart(w http.ResponseWriter, r *http.Request) {
