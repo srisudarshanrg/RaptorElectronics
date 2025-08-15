@@ -109,8 +109,6 @@ func (app Application) Spendings(w http.ResponseWriter, r *http.Request) {
 		app.errorJSON(w, err, http.StatusBadRequest)
 		return
 	}
-
-	
 }
 
 func (app Application) Cart(w http.ResponseWriter, r *http.Request) {
